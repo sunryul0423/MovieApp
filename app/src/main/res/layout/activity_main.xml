@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dl_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.movie.customview.view.CoustomActionBar
+            android:id="@+id/cv_actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.movie.customview.view.CoustomActionBar>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl_refresh_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="-4dp"
+            android:background="@android:color/transparent">
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:paddingBottom="@dimen/main_back_drop_padding">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:addStatesFromChildren="true">
+
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/vp_upcoming"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/main_pager_height" />
+
+                        <com.movie.customview.view.CustomIndicator
+                            android:id="@+id/cv_indicator"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:background="@drawable/shape_main_back_drop_indecator_gradient"
+                            android:gravity="center_horizontal"
+                            android:paddingBottom="@dimen/main_back_drop_padding"
+                            android:paddingTop="@dimen/main_back_drop_padding" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/main_back_drop_padding"
+                        android:layout_marginStart="@dimen/main_back_drop_padding"
+                        android:layout_marginTop="@dimen/main_back_drop_padding"
+                        android:text="@string/now_screening_title"
+                        android:textSize="@dimen/now_screening_font" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_now_screen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/main_back_drop_padding"
+                        android:layout_marginStart="@dimen/main_back_drop_padding"
+                        android:layout_marginTop="@dimen/main_back_drop_padding"
+                        android:text="@string/popular_title"
+                        android:textSize="@dimen/now_screening_font" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_popular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/main_back_drop_padding"
+                        android:layout_marginStart="@dimen/main_back_drop_padding"
+                        android:layout_marginTop="@dimen/main_back_drop_padding"
+                        android:text="@string/top_rated_title"
+                        android:textSize="@dimen/now_screening_font" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_top_rated"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="true" />
+
+                </LinearLayout>
+
+            </android.support.v4.widget.NestedScrollView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
+    <com.movie.customview.view.CoustomDrawerView
+        android:id="@+id/cv_drawer_view"
+        android:layout_width="@dimen/drawer_layout_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/common_text_white"
+        android:gravity="center" />
+
+</android.support.v4.widget.DrawerLayout>
+
+
+
+
+

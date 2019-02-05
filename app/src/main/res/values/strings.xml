@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">MovieApp</string>
+
+    <string name="ab_main_title">Movie</string>
+    <string name="ab_search_text">검색어를 입력하세요.</string>
+    <string name="now_screening_title">Now Screening</string>
+    <string name="popular_title">Popular ></string>
+    <string name="top_rated_title">Top Rated ></string>
+    <string name="overview_title">Overview</string>
+    <string name="similar_title">Similar</string>
+    <string name="detail_video_title">Watch Trailer</string>
+    <string name="overview_cast">Cast</string>
+    <string name="overview_crew">Crew</string>
+
+    <string name="detail_story">Story</string>
+    <string name="detail_more">More</string>
+    <string name="detail_credits">Credits</string>
+    <string name="detail_credits_all">See All ></string>
+    <string name="detail_video">Videos</string>
+    <string name="detail_info">Information</string>
+    <string name="detail_info_release_date">개봉일</string>
+    <string name="detail_info_spoken_languages">언어</string>
+    <string name="detail_info_run_time">상영시간</string>
+    <string name="detail_info_production_country">제작국가</string>
+    <string name="detail_info_production_company">제작사</string>
+
+    <string name="app_finish_msg">한번 더 누르면 앱이 종료됩니다.</string>
+
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/detail_background"
+    android:orientation="vertical">
+
+    <com.movie.customview.view.CoustomActionBar
+        android:id="@+id/cv_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RadioGroup
+        android:id="@+id/rg_detail_credit_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_detail_cast"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector_detail_btn"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:paddingBottom="@dimen/detail_btn_top_margin"
+            android:paddingTop="@dimen/detail_btn_top_margin"
+            android:text="@string/overview_cast"
+            android:textColor="@color/common_text_white" />
+
+        <RadioButton
+            android:id="@+id/rb_detail_crew"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector_detail_btn"
+            android:button="@null"
+            android:gravity="center"
+            android:paddingBottom="@dimen/detail_btn_top_margin"
+            android:paddingTop="@dimen/detail_btn_top_margin"
+            android:text="@string/overview_crew"
+            android:textColor="@color/common_text_white" />
+
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/fl_contents"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>

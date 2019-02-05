@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/detail_background">
+
+    <ImageView
+        android:id="@+id/iv_back_drop"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/detail_top_height"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:scaleType="fitXY" />
+
+    <com.movie.customview.view.CoustomActionBar
+        android:id="@+id/cv_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.movie.customview.view.CoustomActionBar>
+
+    <com.movie.customview.view.CoustomScrollView
+        android:id="@+id/cs_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/cv_actionbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/detail_margin"
+            android:layout_marginStart="@dimen/detail_margin"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/detail_back_drop_padding">
+
+                <ImageView
+                    android:id="@+id/iv_detail_movie_poster"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@null" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/detail_margin">
+
+                    <TextView
+                        android:id="@+id/tv_detail_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/common_text_white" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_original_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_detail_title"
+                        android:textColor="@color/main_back_drop_holder" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_detail_vote_average"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_detail_original_title"
+                        android:layout_marginTop="@dimen/main_list_vote"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/tv_detail_vote_average"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:drawableStart="@drawable/baseline_star_black"
+                            android:drawableTint="@color/image_star"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/common_text_white" />
+
+                        <TextView
+                            android:id="@+id/tv_detail_genres"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/detail_margin"
+                            android:textColor="@color/common_text_white" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_btn_detail_video"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ll_detail_vote_average"
+                        android:layout_marginTop="@dimen/detail_like_btn_margin"
+                        android:background="@drawable/shape_detail_like"
+                        android:paddingBottom="@dimen/detail_btn_top_margin"
+                        android:paddingEnd="@dimen/detail_margin"
+                        android:paddingStart="@dimen/detail_margin"
+                        android:paddingTop="@dimen/detail_btn_top_margin"
+                        android:text="@string/detail_video_title"
+                        android:textColor="@color/common_text_white" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/rg_detail_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_margin"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_detail_overview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_detail_btn"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/detail_btn_top_margin"
+                    android:paddingTop="@dimen/detail_btn_top_margin"
+                    android:text="@string/overview_title"
+                    android:textColor="@color/common_text_white" />
+
+                <RadioButton
+                    android:id="@+id/rb_detail_similar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_detail_btn"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/detail_btn_top_margin"
+                    android:paddingTop="@dimen/detail_btn_top_margin"
+                    android:text="@string/similar_title"
+                    android:textColor="@color/common_text_white" />
+
+            </RadioGroup>
+
+            <FrameLayout
+                android:id="@+id/fl_contents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </com.movie.customview.view.CoustomScrollView>
+
+</RelativeLayout>

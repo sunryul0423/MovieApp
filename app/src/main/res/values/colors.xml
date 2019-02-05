@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="common_line_color">#999999</color>
+    <color name="common_text_white">#FFFFFF</color>
+
+    <color name="image_star">#FFEE00</color>
+    <color name="main_back_drop_holder">#898989</color>
+
+    <color name="common_transparent">#00000000</color>
+    <color name="detail_background">#FF0C0C0C</color>
+    <color name="detail_like_btn">#FFF91952</color>
+    <color name="detail_detail_btn">#FF282829</color>
+
+</resources>

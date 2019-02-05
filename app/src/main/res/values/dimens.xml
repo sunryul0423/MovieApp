@@ -1,0 +1,47 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="ab_height">56dp</dimen>
+    <dimen name="ab_content_height">55dp</dimen>
+    <dimen name="ab_search_background">4dp</dimen>
+    <dimen name="common_line">1dp</dimen>
+
+    <dimen name="drawer_layout_width">200dp</dimen>
+
+    <dimen name="main_back_drop_padding">10dp</dimen>
+    <dimen name="main_list_title">3dp</dimen>
+    <dimen name="main_list_vote">2dp</dimen>
+    <dimen name="main_list_item_width">100dp</dimen>
+    <dimen name="main_pager_height">170dp</dimen>
+    <dimen name="vote_average_padding">3dp</dimen>
+
+    <dimen name="detail_top_height">250dp</dimen>
+    <dimen name="detail_back_drop_padding">150dp</dimen>
+    <dimen name="detail_margin">20dp</dimen>
+    <dimen name="detail_btn_top_margin">10dp</dimen>
+    <dimen name="detail_like_btn_radius">100dp</dimen>
+    <dimen name="detail_like_btn_margin">7dp</dimen>
+    <dimen name="detail_rg_radius">30dp</dimen>
+    <dimen name="detail_overview_credit_img_size">80dp</dimen>
+    <dimen name="detail_info_title_width">110dp</dimen>
+    <dimen name="detail_overview_credit_divider">10dp</dimen>
+    <dimen name="detail_similar_img_width">150dp</dimen>
+    <dimen name="detail_similar_img_height">200dp</dimen>
+    <dimen name="detail_video_weight">260dp</dimen>
+    <dimen name="detail_video_height">180dp</dimen>
+    <dimen name="detail_search_grid_margin">10dp</dimen>
+
+
+    <dimen name="ab_tile_font">22sp</dimen>
+    <dimen name="movie_tile_font">20sp</dimen>
+    <dimen name="now_screening_font">18sp</dimen>
+    <dimen name="detail_overview_credit_name">12sp</dimen>
+    <dimen name="detail_overview_credit_part">10sp</dimen>
+    <dimen name="detail_overview_credit_all">14sp</dimen>
+    <dimen name="ab_search_text">14sp</dimen>
+</resources>
