@@ -3,53 +3,49 @@ package com.movie.model.data
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class MovieDetailResponse : Serializable {
-
-    var adult: Boolean = false
+data class MovieDetailResponse(
+    var adult: Boolean,
     @SerializedName("backdrop_path")
-    var backdropPath: String = ""
+    var backdropPath: String,
     @SerializedName("belongs_to_collection")
-    var belongsToCollection: BelongsToCollection? = null
+    var belongsToCollection: BelongsToCollection,
+    var budget: Int,
+    var genres: List<Genres>,
 
-    var budget: Int = 0
-    var genres: List<Genres>? = null
-
-    var homepage: String = ""
-    var id: Int = 0
+    var homepage: String,
+    var id: Int,
     @SerializedName("imdb_id")
-    var imdbId: String = ""
+    var imdbId: String,
     @SerializedName("original_language")
-    var originalLanguage: String = ""
+    var originalLanguage: String,
     @SerializedName("original_title")
-    var originalTitle: String = ""
-    var overview: String = ""
+    var originalTitle: String,
+    var overview: String,
     @SerializedName("popularity")
-    var popularity: Double = 0.0
+    var popularity: Double,
     @SerializedName("poster_path")
-    var posterPath: String = ""
+    var posterPath: String,
     @SerializedName("production_companies")
-    var productionCompanies: List<ProductionCompanies>? = null
-
+    var productionCompanies: List<ProductionCompanies>,
     @SerializedName("production_countries")
-    var productionCountries: List<ProductionCountries>? = null
-
+    var productionCountries: List<ProductionCountries>,
     @SerializedName("release_date")
-    var releaseDate: String = ""
-    var revenue: Int = 0
+    var releaseDate: String,
+    var revenue: Int,
     @SerializedName("runtime")
-    var runTime: Int = 0
+    var runTime: Int,
     @SerializedName("spoken_languages")
-    var spokenLanguages: List<SpokenLanguages>? = null
-
-    var status: String = ""
+    var spokenLanguages: List<SpokenLanguages>,
+    var status: String,
     @SerializedName("tagline")
-    var tagLine: String = ""
-    var title: String = ""
-    var video: Boolean = false
+    var tagLine: String,
+    var title: String,
+    var video: Boolean,
     @SerializedName("vote_average")
-    var voteAverage: Double = 0.0
+    var voteAverage: Double,
     @SerializedName("vote_count")
-    var voteCount: Int = 0
+    var voteCount: Int
+) : Serializable {
 
     inner class BelongsToCollection : Serializable
 

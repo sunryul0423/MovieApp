@@ -2,13 +2,13 @@ package com.movie.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.movie.R
-import com.movie.common.constants.MovieConstant
+import com.movie.common.constants.DETAIL_CREDIT_CREW
 import com.movie.customview.adapter.CreditListAdapter
 import com.movie.customview.adapter.RecyclerViewDecoration
 import com.movie.model.data.CreaditInfoModel
@@ -24,7 +24,7 @@ class MovieDetailCreditCrewFragment : BaseFragment() {
         fun newInstance(creditResponse: CreditResponse): MovieDetailCreditCrewFragment {
             val fragment = MovieDetailCreditCrewFragment()
             val arg = Bundle()
-            arg.putSerializable(MovieConstant.DETAIL_CREDIT_CREW, creditResponse)
+            arg.putSerializable(DETAIL_CREDIT_CREW, creditResponse)
             fragment.arguments = arg
             return fragment
         }
@@ -37,7 +37,7 @@ class MovieDetailCreditCrewFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        crewList = (arguments?.getSerializable(MovieConstant.DETAIL_CREDIT_CREW) as CreditResponse).crew
+        crewList = (arguments?.getSerializable(DETAIL_CREDIT_CREW) as CreditResponse).crew
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -51,10 +51,7 @@ class MovieDetailCreditCrewFragment : BaseFragment() {
 
         val creaditInfoList: MutableList<CreaditInfoModel> = mutableListOf()
         for (i in crewList.indices) {
-            val creaditInfoModel = CreaditInfoModel()
-            creaditInfoModel.url = crewList[i].profilePath
-            creaditInfoModel.name = crewList[i].name
-            creaditInfoModel.part = crewList[i].job
+            val creaditInfoModel = CreaditInfoModel(crewList[i].profilePath, crewList[i].name, crewList[i].job)
             creaditInfoList.add(creaditInfoModel)
         }
         val creditListAdapter = CreditListAdapter(mContext, creaditInfoList)

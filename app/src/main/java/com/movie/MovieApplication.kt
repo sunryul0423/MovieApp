@@ -1,18 +1,14 @@
 package com.movie
 
-import android.support.multidex.MultiDexApplication
+import androidx.multidex.MultiDexApplication
+import com.movie.di.appModule
+import org.koin.android.ext.android.startKoin
 
 class MovieApplication : MultiDexApplication() {
 
-    init {
-        INSTANCE = this
-    }
 
     override fun onCreate() {
         super.onCreate()
-    }
-
-    companion object {
-        var INSTANCE: MovieApplication? = null
+        startKoin(this, appModule)
     }
 }

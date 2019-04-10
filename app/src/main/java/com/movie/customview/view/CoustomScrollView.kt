@@ -1,10 +1,9 @@
 package com.movie.customview.view
 
 import android.content.Context
-import android.support.v4.widget.NestedScrollView
-import android.text.BoringLayout
 import android.util.AttributeSet
 import android.view.MotionEvent
+import androidx.core.widget.NestedScrollView
 import com.movie.`interface`.OnScrollListener
 
 class CoustomScrollView : NestedScrollView {

@@ -21,7 +21,7 @@ class CreditResponse : Serializable {
         var name = ""
         var order = 0
         @SerializedName("profile_path")
-        var profilePath: String? = null
+        var profilePath = ""
     }
 
     inner class Crew : Serializable {
@@ -33,6 +33,6 @@ class CreditResponse : Serializable {
         var job = ""
         var name = ""
         @SerializedName("profile_path")
-        var profilePath: String? = null
+        var profilePath = ""
     }
 }

@@ -2,26 +2,29 @@ package com.movie.activity
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RadioGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.movie.R
 import com.movie.`interface`.IRxResult
 import com.movie.`interface`.IScrollChangeListener
 import com.movie.`interface`.OnScrollListener
-import com.movie.common.constants.MovieConstant
+import com.movie.common.constants.IMAGE_URL
+import com.movie.common.constants.MOVIE_ID
 import com.movie.common.utils.CommonUtil
 import com.movie.customview.view.CoustomScrollView
+import com.movie.databinding.ActivityDetailMovieBinding
 import com.movie.fragment.MovieDetailOverviewFragment
 import com.movie.fragment.MovieDetailSimilarFragment
 import com.movie.model.data.MovieDetailResponse
 
-class DetailMovieActivity : BaseActivity(), View.OnClickListener, IScrollChangeListener {
+class DetailMovieActivity : BaseActivity<ActivityDetailMovieBinding>(), View.OnClickListener, IScrollChangeListener {
+    override val layoutResourceId: Int
+        get() = R.layout.activity_detail_movie
+
     override fun onScroll(enableScroll: Boolean) {
         csView.isEnableScroll(enableScroll)
     }
@@ -44,9 +47,8 @@ class DetailMovieActivity : BaseActivity(), View.OnClickListener, IScrollChangeL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_movie)
         initActionBar(true, "")
-        movieId = intent.getIntExtra(MovieConstant.MOVIE_ID, 0)
+        movieId = intent.getIntExtra(MOVIE_ID, 0)
         setView()
         reqeustApi()
     }
@@ -117,43 +119,43 @@ class DetailMovieActivity : BaseActivity(), View.OnClickListener, IScrollChangeL
 
     private fun reqeustApi() {
 
-        rxResponseManager.add(apiRequest.getDetail(movieId, CommonUtil.getParam()), object : IRxResult {
-
-            override fun <T> onNext(response: T) {
-                movieDetailResponse = response as MovieDetailResponse
-                setActionBarTitle(movieDetailResponse.title)
-                supportFragmentManager.beginTransaction().replace(R.id.fl_contents, MovieDetailOverviewFragment.newInstance(movieDetailResponse, movieId)).commitAllowingStateLoss()
-
-                Glide.with(mContext)
-                        .load(MovieConstant.IMAGE_URL + movieDetailResponse.backdropPath)
-                        .override(mContext.resources.displayMetrics.widthPixels, mContext.resources.displayMetrics.widthPixels / 3)
-                        .error(R.drawable.film_poster_placeholder)
-                        .placeholder(R.drawable.film_poster_placeholder)
-                        .into(ivBackDrop)
-                Glide.with(mContext)
-                        .load(MovieConstant.IMAGE_URL + movieDetailResponse.posterPath)
-                        .override(mContext.resources.displayMetrics.widthPixels, mContext.resources.displayMetrics.widthPixels / 3)
-                        .error(R.drawable.film_poster_placeholder)
-                        .placeholder(R.drawable.film_poster_placeholder)
-                        .into(ivDetailMoviePoster)
-
-                tvDetailTitle.text = movieDetailResponse.title
-                tvDetailOriginalTitle.text = movieDetailResponse.originalTitle
-                tvDetailVoteAverage.text = "${movieDetailResponse.voteAverage}"
-                if (movieDetailResponse.genres?.firstOrNull() != null) {
-                    val str = StringBuilder()
-                    for (i in 0 until movieDetailResponse.genres!!.size) {
-                        tvDetailGenres.text = str.append(movieDetailResponse.genres!![i].name)
-                        if (movieDetailResponse.genres!!.size != 1 && i != movieDetailResponse.genres!!.size - 1) {
-                            str.append(", ")
-                        }
-                    }
-                }
-            }
-
-            override fun onErrer(error: Throwable) {
-            }
-        })
+//        rxResponseManager.add(apiRequest.getDetail(movieId, CommonUtil.getParam()), object : IRxResult {
+//
+//            override fun <T> onNext(response: T) {
+//                movieDetailResponse = response as MovieDetailResponse
+//                setActionBarTitle(movieDetailResponse.title)
+//                supportFragmentManager.beginTransaction().replace(R.id.fl_contents, MovieDetailOverviewFragment.newInstance(movieDetailResponse, movieId)).commitAllowingStateLoss()
+//
+//                Glide.with(mContext)
+//                        .load(IMAGE_URL + movieDetailResponse.backdropPath)
+//                        .override(mContext.resources.displayMetrics.widthPixels, mContext.resources.displayMetrics.widthPixels / 3)
+//                        .error(R.drawable.film_poster_placeholder)
+//                        .placeholder(R.drawable.film_poster_placeholder)
+//                        .into(ivBackDrop)
+//                Glide.with(mContext)
+//                        .load(IMAGE_URL + movieDetailResponse.posterPath)
+//                        .override(mContext.resources.displayMetrics.widthPixels, mContext.resources.displayMetrics.widthPixels / 3)
+//                        .error(R.drawable.film_poster_placeholder)
+//                        .placeholder(R.drawable.film_poster_placeholder)
+//                        .into(ivDetailMoviePoster)
+//
+//                tvDetailTitle.text = movieDetailResponse.title
+//                tvDetailOriginalTitle.text = movieDetailResponse.originalTitle
+//                tvDetailVoteAverage.text = "${movieDetailResponse.voteAverage}"
+//                if (movieDetailResponse.genres.firstOrNull() != null) {
+//                    val str = StringBuilder()
+//                    for (i in 0 until movieDetailResponse.genres!!.size) {
+//                        tvDetailGenres.text = str.append(movieDetailResponse.genres!![i].name)
+//                        if (movieDetailResponse.genres!!.size != 1 && i != movieDetailResponse.genres!!.size - 1) {
+//                            str.append(", ")
+//                        }
+//                    }
+//                }
+//            }
+//
+//            override fun onErrer(error: Throwable) {
+//            }
+//        })
     }
 
     override fun onClick(v: View) {

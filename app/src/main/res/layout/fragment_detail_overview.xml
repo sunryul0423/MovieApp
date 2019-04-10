@@ -59,7 +59,7 @@
                 android:textColor="@color/common_text_white"
                 android:textSize="@dimen/movie_tile_font" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_video"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
 
             </FrameLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_credit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,23 +1,25 @@
 package com.movie.activity
 
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.movie.R
 import com.movie.`interface`.IRxResult
-import com.movie.common.constants.MovieConstant
+import com.movie.common.constants.SEARCH_SPAN_COUNT
 import com.movie.common.utils.CommonUtil
 import com.movie.customview.adapter.RecyclerViewDecoration
 import com.movie.customview.adapter.SimilarGridAdapter
+import com.movie.databinding.ActivitySearchBinding
 import com.movie.model.data.MovieMainResponse
 import com.movie.model.data.RecyclerViewSpacing
 
-class SearchActivity : BaseActivity(), View.OnClickListener {
+class SearchActivity : BaseActivity<ActivitySearchBinding>(), View.OnClickListener {
+    override val layoutResourceId: Int
+        get() = R.layout.activity_search
 
     private lateinit var rvSearch: RecyclerView
     private lateinit var etSearchTitle: EditText
@@ -27,10 +29,8 @@ class SearchActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
         setView()
     }
-
 
     fun setView() {
         val llBack: LinearLayout = findViewById(R.id.ll_back)
@@ -42,9 +42,13 @@ class SearchActivity : BaseActivity(), View.OnClickListener {
 
         rvSearch.setHasFixedSize(true)
         val spacing: Int = resources.getDimensionPixelSize(R.dimen.detail_search_grid_margin)
-        val recyclerViewDecoration = RecyclerViewDecoration(true, MovieConstant.SEARCH_SPAN_COUNT, RecyclerViewSpacing(spacing, spacing, spacing, spacing))
+        val recyclerViewDecoration = RecyclerViewDecoration(
+            true,
+            SEARCH_SPAN_COUNT,
+            RecyclerViewSpacing(spacing, spacing, spacing, spacing)
+        )
         rvSearch.addItemDecoration(recyclerViewDecoration)
-        rvSearch.layoutManager = GridLayoutManager(mContext, MovieConstant.SEARCH_SPAN_COUNT)
+        rvSearch.layoutManager = GridLayoutManager(mContext, SEARCH_SPAN_COUNT)
         rvSearch.adapter = searchGridAdapter
         rvSearch.setOnScrollChangeListener { _, _, _, _, _ ->
             if (!rvSearch.canScrollVertically(1)) { //최하단 스크롤
@@ -76,20 +80,24 @@ class SearchActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun requestApi(searchPage: Int) {
-        rxResponseManager.add(apiRequest.getSearch(CommonUtil.getSearchParam(etSearchTitle.text.toString()), searchPage), object : IRxResult {
-
-            override fun <T> onNext(response: T) {
-                val movieMainResponse = response as MovieMainResponse
-                val searchList: MutableList<MovieMainResponse.Movie> = movieMainResponse.results
-                        ?: mutableListOf()
-                if (searchPage < movieMainResponse.totalPages) {
-                    correntPage++
-                }
-                searchGridAdapter.addList(searchList)
-            }
-
-            override fun onErrer(error: Throwable) {
-            }
-        })
+//        rxResponseManager.add(
+//            apiRequest.getSearch(
+//                CommonUtil.getSearchParam(etSearchTitle.text.toString()),
+//                searchPage
+//            ), object : IRxResult {
+//
+//                override fun <T> onNext(response: T) {
+//                    val movieMainResponse = response as MovieMainResponse
+//                    val searchList: MutableList<MovieMainResponse.Movie> = movieMainResponse.results
+//                        ?: mutableListOf()
+//                    if (searchPage < movieMainResponse.totalPages) {
+//                        correntPage++
+//                    }
+//                    searchGridAdapter.addList(searchList)
+//                }
+//
+//                override fun onErrer(error: Throwable) {
+//                }
+//            })
     }
 }

@@ -3,22 +3,21 @@ package com.movie.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.movie.R
 import com.movie.`interface`.IRxResult
 import com.movie.`interface`.IScrollChangeListener
-import com.movie.`interface`.OnScrollListener
 import com.movie.activity.DetailCreditActivity
 import com.movie.activity.DetailMovieActivity
-import com.movie.common.constants.MovieConstant
+import com.movie.common.constants.*
 import com.movie.common.utils.CommonUtil
 import com.movie.customview.adapter.CreditListAdapter
 import com.movie.customview.adapter.RecyclerViewDecoration
@@ -44,8 +43,8 @@ class MovieDetailOverviewFragment : BaseFragment(), View.OnClickListener {
         fun newInstance(movieDetailResponse: MovieDetailResponse, movieId: Int): MovieDetailOverviewFragment {
             val fragment = MovieDetailOverviewFragment()
             val args = Bundle()
-            args.putSerializable(MovieConstant.MOVIE_DETAIL_RESPONSE_KEY, movieDetailResponse)
-            args.putInt(MovieConstant.MOVIE_ID, movieId)
+            args.putSerializable(MOVIE_DETAIL_RESPONSE_KEY, movieDetailResponse)
+            args.putInt(MOVIE_ID, movieId)
             fragment.arguments = args
             return fragment
         }
@@ -59,8 +58,8 @@ class MovieDetailOverviewFragment : BaseFragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        movieDetailResponse = arguments?.getSerializable(MovieConstant.MOVIE_DETAIL_RESPONSE_KEY) as MovieDetailResponse
-        movieId = arguments?.getInt(MovieConstant.MOVIE_ID) ?: 0
+        movieDetailResponse = arguments?.getSerializable(MOVIE_DETAIL_RESPONSE_KEY) as MovieDetailResponse
+        movieId = arguments?.getInt(MOVIE_ID) ?: 0
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -110,11 +109,11 @@ class MovieDetailOverviewFragment : BaseFragment(), View.OnClickListener {
         tvDetailReleaseDateValue.text = movieDetailResponse.releaseDate
 
         tvDetailSpokenLanguagesTitle.text = resources.getString(R.string.detail_info_spoken_languages)
-        if (movieDetailResponse.spokenLanguages?.firstOrNull() != null) {
+        if (movieDetailResponse.spokenLanguages.firstOrNull() != null) {
             val str = StringBuilder()
-            for (i in 0 until movieDetailResponse.spokenLanguages!!.size) {
-                tvDetailSpokenLanguagesValue.text = str.append(movieDetailResponse.spokenLanguages!![i].name)
-                if (movieDetailResponse.spokenLanguages!!.size != 1 && i != movieDetailResponse.spokenLanguages!!.size - 1) {
+            for (i in 0 until movieDetailResponse.spokenLanguages.size) {
+                tvDetailSpokenLanguagesValue.text = str.append(movieDetailResponse.spokenLanguages[i].name)
+                if (movieDetailResponse.spokenLanguages.size != 1 && i != movieDetailResponse.spokenLanguages.size - 1) {
                     str.append(", ")
                 }
             }
@@ -124,49 +123,57 @@ class MovieDetailOverviewFragment : BaseFragment(), View.OnClickListener {
         tvDetailRunTimeValue.text = "${movieDetailResponse.runTime}"
 
         tvDetailProductionCountryTitle.text = resources.getString(R.string.detail_info_production_country)
-        if (movieDetailResponse.productionCountries?.firstOrNull() != null) {
+        if (movieDetailResponse.productionCountries.firstOrNull() != null) {
             val str = StringBuilder()
-            for (i in 0 until movieDetailResponse.productionCountries!!.size) {
-                tvDetailProductionCountryValue.text = str.append(movieDetailResponse.productionCountries!![i].name)
-                if (movieDetailResponse.productionCountries!!.size != 1 && i != movieDetailResponse.productionCountries!!.size - 1) {
+            for (i in 0 until movieDetailResponse.productionCountries.size) {
+                tvDetailProductionCountryValue.text = str.append(movieDetailResponse.productionCountries[i].name)
+                if (movieDetailResponse.productionCountries.size != 1 && i != movieDetailResponse.productionCountries.size - 1) {
                     str.append("\n")
                 }
             }
         }
 
         tvDetailProductionCompanyTitle.text = resources.getString(R.string.detail_info_production_company)
-        if (movieDetailResponse.productionCompanies?.firstOrNull() != null) {
+        if (movieDetailResponse.productionCompanies.firstOrNull() != null) {
             val str = StringBuilder()
-            for (i in 0 until movieDetailResponse.productionCompanies!!.size) {
-                tvDetailProductionCompanyValue.text = str.append(movieDetailResponse.productionCompanies!![i].name)
-                if (movieDetailResponse.productionCompanies!!.size != 1 && i != movieDetailResponse.productionCompanies!!.size - 1) {
+            for (i in 0 until movieDetailResponse.productionCompanies.size) {
+                tvDetailProductionCompanyValue.text = str.append(movieDetailResponse.productionCompanies[i].name)
+                if (movieDetailResponse.productionCompanies.size != 1 && i != movieDetailResponse.productionCompanies.size - 1) {
                     str.append("\n")
                 }
             }
         }
     }
 
-    fun requestApi() {
-        rxResponseManager.add(apiRequest.getVideos(movieId, hashMapOf(MovieConstant.API_KEY to MovieConstant.TMDB_API_KEY)), object : IRxResult {
+    private fun requestApi() {
+        rxResponseManager.add(
+            apiRequest.getVideos(
+                movieId,
+                hashMapOf(API_KEY to TMDB_API_KEY)
+            ), object : IRxResult {
 
-            override fun <T> onNext(response: T) {
-                val videoList: List<VideoResponse.Videos> = (response as VideoResponse).results
+                override fun <T> onNext(response: T) {
+                    val videoList: List<VideoResponse.Videos> = (response as VideoResponse).results
                         ?: emptyList()
 
-                val videoListAdapter = VideoListAdapter(mContext, videoList)
-                rvVideo.setHasFixedSize(true)
-                val spacing: Int = resources.getDimensionPixelSize(R.dimen.detail_overview_credit_divider)
-                val recyclerViewDecoration = RecyclerViewDecoration(false, videoList.size, RecyclerViewSpacing(spacing, spacing, spacing, spacing))
-                rvVideo.addItemDecoration(recyclerViewDecoration)
-                val layoutManager = LinearLayoutManager(mContext)
-                layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-                rvVideo.layoutManager = layoutManager
-                rvVideo.adapter = videoListAdapter
-            }
+                    val videoListAdapter = VideoListAdapter(mContext, videoList)
+                    rvVideo.setHasFixedSize(true)
+                    val spacing: Int = resources.getDimensionPixelSize(R.dimen.detail_overview_credit_divider)
+                    val recyclerViewDecoration = RecyclerViewDecoration(
+                        false,
+                        videoList.size,
+                        RecyclerViewSpacing(spacing, spacing, spacing, spacing)
+                    )
+                    rvVideo.addItemDecoration(recyclerViewDecoration)
+                    val layoutManager = LinearLayoutManager(mContext)
+                    layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+                    rvVideo.layoutManager = layoutManager
+                    rvVideo.adapter = videoListAdapter
+                }
 
-            override fun onErrer(error: Throwable) {
-            }
-        })
+                override fun onErrer(error: Throwable) {
+                }
+            })
 
         rxResponseManager.add(apiRequest.getCredit(movieId, CommonUtil.getParam()), object : IRxResult {
 
@@ -178,30 +185,30 @@ class MovieDetailOverviewFragment : BaseFragment(), View.OnClickListener {
                 val creaditInfoList: MutableList<CreaditInfoModel> = mutableListOf()
                 for (i in crewList.indices) {
                     if ("Director" == crewList[i].job) {
-                        val creaditInfoModel = CreaditInfoModel()
-                        creaditInfoModel.url = crewList[i].profilePath
-                        creaditInfoModel.name = crewList[i].name
-                        creaditInfoModel.part = crewList[i].job
+                        val creaditInfoModel =
+                            CreaditInfoModel(crewList[i].profilePath, crewList[i].name, crewList[i].job)
                         creaditInfoList.add(creaditInfoModel)
                         break
                     }
                 }
 
-                if (MovieConstant.CREDIT_COUNT < castList.size) {
-                    castList = castList.subList(0, MovieConstant.CREDIT_COUNT)
+                if (CREDIT_COUNT < castList.size) {
+                    castList = castList.subList(0, CREDIT_COUNT)
                 }
                 for (i in castList.indices) {
-                    val creaditInfoModel = CreaditInfoModel()
-                    creaditInfoModel.url = castList[i].profilePath
-                    creaditInfoModel.name = castList[i].name
-                    creaditInfoModel.part = castList[i].character
+                    val creaditInfoModel =
+                        CreaditInfoModel(castList[i].profilePath, castList[i].name, castList[i].character)
                     creaditInfoList.add(creaditInfoModel)
                 }
 
                 val creditListAdapter = CreditListAdapter(mContext, creaditInfoList)
                 rvCredit.setHasFixedSize(true)
                 val spacing: Int = resources.getDimensionPixelSize(R.dimen.detail_overview_credit_divider)
-                val recyclerViewDecoration = RecyclerViewDecoration(false, creaditInfoList.size, RecyclerViewSpacing(spacing, spacing, spacing, spacing))
+                val recyclerViewDecoration = RecyclerViewDecoration(
+                    false,
+                    creaditInfoList.size,
+                    RecyclerViewSpacing(spacing, spacing, spacing, spacing)
+                )
                 rvCredit.addItemDecoration(recyclerViewDecoration)
                 val layoutManager = LinearLayoutManager(mContext)
                 layoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -219,17 +226,27 @@ class MovieDetailOverviewFragment : BaseFragment(), View.OnClickListener {
             R.id.tv_overview_more -> {
                 if (tvOverviewStory.visibility == View.VISIBLE) {
                     tvOverviewStory.visibility = View.GONE
-                    tvOverviewMore.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(mContext, R.drawable.baseline_keyboard_arrow_up_black), null)
+                    tvOverviewMore.setCompoundDrawablesWithIntrinsicBounds(
+                        null,
+                        null,
+                        ContextCompat.getDrawable(mContext, R.drawable.baseline_keyboard_arrow_up_black),
+                        null
+                    )
                 } else {
                     tvOverviewStory.visibility = View.VISIBLE
-                    tvOverviewMore.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(mContext, R.drawable.baseline_keyboard_arrow_down_black), null)
+                    tvOverviewMore.setCompoundDrawablesWithIntrinsicBounds(
+                        null,
+                        null,
+                        ContextCompat.getDrawable(mContext, R.drawable.baseline_keyboard_arrow_down_black),
+                        null
+                    )
                 }
             }
 
             R.id.tv_credit_all -> {
                 val intent = Intent(mContext, DetailCreditActivity::class.java)
-                intent.putExtra(MovieConstant.MOVIE_NAME, movieDetailResponse.title)
-                intent.putExtra(MovieConstant.DETAIL_CREDIT, creditResponse)
+                intent.putExtra(MOVIE_NAME, movieDetailResponse.title)
+                intent.putExtra(DETAIL_CREDIT, creditResponse)
                 ActivityCompat.startActivity(mContext, intent, null)
             }
         }

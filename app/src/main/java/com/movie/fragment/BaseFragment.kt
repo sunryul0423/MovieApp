@@ -2,7 +2,7 @@ package com.movie.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.movie.model.request.ApiRequest
 import com.movie.server.RetrofitManager
 import com.movie.server.RxResponseManager

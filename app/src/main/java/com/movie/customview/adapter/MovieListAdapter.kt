@@ -2,18 +2,19 @@ package com.movie.customview.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.app.ActivityCompat
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.movie.R
 import com.movie.activity.DetailMovieActivity
-import com.movie.common.constants.MovieConstant
+import com.movie.common.constants.IMAGE_URL
+import com.movie.common.constants.MOVIE_ID
 import com.movie.model.data.MovieMainResponse
 
 class MovieListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,10 +27,10 @@ class MovieListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     internal fun setData(mContext: Context, isVote: Boolean, movieList: List<MovieMainResponse.Movie>, position: Int) {
         llListItem.setOnClickListener {
             val intent = Intent(mContext, DetailMovieActivity::class.java)
-            intent.putExtra(MovieConstant.MOVIE_ID, movieList[position].id)
+            intent.putExtra(MOVIE_ID, movieList[position].id)
             ActivityCompat.startActivity(mContext, intent, null)
         }
-        val url = MovieConstant.IMAGE_URL + movieList[position].posterPath
+        val url = IMAGE_URL + movieList[position].posterPath
         Glide.with(mContext)
                 .load(url)
                 .override(400, 600)

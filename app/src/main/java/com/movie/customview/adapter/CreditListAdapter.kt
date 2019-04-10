@@ -2,31 +2,27 @@ package com.movie.customview.adapter
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 import com.movie.R
-import com.movie.common.constants.MovieConstant
+import com.movie.common.constants.IMAGE_URL
+import com.movie.databinding.ViewCreditListItemBinding
 import com.movie.model.data.CreaditInfoModel
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 
-class CreditListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    //layout
-    private val llCreditListItem: LinearLayout = itemView.findViewById(R.id.ll_credit_list_item)
-    private val ivCreditImg: ImageView = itemView.findViewById(R.id.iv_credit_img)
-    private val tvCreditName: TextView = itemView.findViewById(R.id.tv_credit_name)
-    private val tvCreditPart: TextView = itemView.findViewById(R.id.tv_credit_part)
+class CreditListHolder(private val binding: ViewCreditListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
     internal fun setData(mContext: Context, creaditInfoList: MutableList<CreaditInfoModel>, position: Int) {
-        llCreditListItem.setOnClickListener {
+        binding.llCreditListItem.setOnClickListener {
             //            val intent = Intent(mContext, DetailMovieActivity::class.java)
-//            intent.putExtra(MovieConstant.MOVIE_ID, movieList[position].id)
+//            intent.putExtra(MOVIE_ID, movieList[position].id)
 //            ActivityCompat.startActivity(mContext, intent, null)
         }
         val bitmapPool = object : BitmapPool {
@@ -56,33 +52,35 @@ class CreditListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
         }
 
-        if (creaditInfoList[position].url.isNullOrEmpty()) {
+        if (creaditInfoList[position].url.isEmpty()) {
             Glide.with(mContext)
-                    .load(R.drawable.profile)
-                    .bitmapTransform(CropCircleTransformation(bitmapPool))
-                    .placeholder(R.drawable.profile)
-                    .into(ivCreditImg)
+                .load(R.drawable.profile)
+                .bitmapTransform(CropCircleTransformation(bitmapPool))
+                .placeholder(R.drawable.profile)
+                .into(binding.ivCreditImg)
         } else {
-            val url = MovieConstant.IMAGE_URL + creaditInfoList[position].url
+            val url = IMAGE_URL + creaditInfoList[position].url
             Glide.with(mContext)
-                    .load(url)
-                    .override(600, 600)
-                    .centerCrop()
-                    .bitmapTransform(CropCircleTransformation(bitmapPool))
-                    .placeholder(R.drawable.profile)
-                    .error(R.drawable.profile)
-                    .into(ivCreditImg)
+                .load(url)
+                .override(600, 600)
+                .centerCrop()
+                .bitmapTransform(CropCircleTransformation(bitmapPool))
+                .placeholder(R.drawable.profile)
+                .error(R.drawable.profile)
+                .into(binding.ivCreditImg)
         }
-        tvCreditName.text = creaditInfoList[position].name
-        tvCreditPart.text = creaditInfoList[position].part
+        binding.tvCreditName.text = creaditInfoList[position].name
+        binding.tvCreditPart.text = creaditInfoList[position].part
     }
 }
 
-class CreditListAdapter(private val mContext: Context, private var creaditInfoList: MutableList<CreaditInfoModel>) : RecyclerView.Adapter<CreditListHolder>() {
+class CreditListAdapter(private val mContext: Context, private var creaditInfoList: MutableList<CreaditInfoModel>) :
+    RecyclerView.Adapter<CreditListHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CreditListHolder {
-        val view = LayoutInflater.from(mContext).inflate(R.layout.view_credit_list_item, parent, false)
-        return CreditListHolder(view)
+        val binding: ViewCreditListItemBinding =
+            DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.view_credit_list_item, parent, false)
+        return CreditListHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CreditListHolder, position: Int) {

@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fl_pager_item"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:id="@+id/fl_pager_item"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/iv_movie_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:contentDescription="@null"
-        android:scaleType="fitXY" />
+        <ImageView
+                android:id="@+id/iv_movie_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"/>
 
-    <TextView
-        android:id="@+id/tv_movie_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_main_back_drop_title_gradient"
-        android:padding="@dimen/main_back_drop_padding"
-        android:textColor="@color/common_text_white"
-        android:textSize="@dimen/movie_tile_font" />
+        <TextView
+                android:id="@+id/tv_movie_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_main_back_drop_title_gradient"
+                android:padding="@dimen/main_back_drop_padding"
+                android:textColor="@color/common_text_white"
+                android:textSize="@dimen/movie_tile_font"/>
 
-</FrameLayout>
+    </FrameLayout>
+</layout>

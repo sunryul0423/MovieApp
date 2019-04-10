@@ -5,7 +5,7 @@ import android.os.Handler
 import android.util.Log
 import com.movie.`interface`.IRxResult
 import com.movie.dialog.ProgressDialog
-import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -17,16 +17,17 @@ class RxResponseManager(mContext: Context) {
     var progress: ProgressDialog = ProgressDialog(mContext)
     val handler: Handler = Handler()
 
-    inline fun <reified T> add(disposable: Observable<T>, result: IRxResult) {
+    inline fun <reified T> add(disposable: Single<T>, result: IRxResult) {
         ++count
         if (!progress.isShowing) {
             handler.post {
                 progress.show()
             }
         }
-        compositeDisposable.add(disposable
+        compositeDisposable.add(
+            disposable
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
                 .subscribe({ response: T ->
                     --count
                     Log.d("srpark", "성공")

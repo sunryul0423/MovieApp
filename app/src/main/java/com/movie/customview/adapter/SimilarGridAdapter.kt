@@ -3,19 +3,20 @@ package com.movie.customview.adapter
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.support.v4.app.ActivityCompat
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 import com.movie.R
 import com.movie.activity.DetailMovieActivity
-import com.movie.common.constants.MovieConstant
+import com.movie.common.constants.IMAGE_URL
+import com.movie.common.constants.MOVIE_ID
 import com.movie.model.data.MovieMainResponse
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
@@ -28,7 +29,7 @@ class SimilarGridHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     internal fun setData(mContext: Context, similarList: List<MovieMainResponse.Movie>, position: Int) {
         llSimilarListItem.setOnClickListener {
             val intent = Intent(mContext, DetailMovieActivity::class.java)
-            intent.putExtra(MovieConstant.MOVIE_ID, similarList[position].id)
+            intent.putExtra(MOVIE_ID, similarList[position].id)
             ActivityCompat.startActivity(mContext, intent, null)
         }
         val bitmapPool = object : BitmapPool {
@@ -57,24 +58,28 @@ class SimilarGridHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 return false
             }
         }
-        val url = MovieConstant.IMAGE_URL + similarList[position].posterPath
+        val url = IMAGE_URL + similarList[position].posterPath
         Glide.with(mContext)
-                .load(url)
-                .override(mContext.resources.displayMetrics.widthPixels, mContext.resources.displayMetrics.widthPixels / 3)
-                .centerCrop()
-                .bitmapTransform(RoundedCornersTransformation(bitmapPool,
-                        mContext.resources.getDimensionPixelSize(R.dimen.detail_rg_radius),
-                        0
-                ))
-                .error(R.drawable.film_poster_placeholder)
-                .placeholder(R.drawable.film_poster_placeholder)
-                .into(ivSimilarImg)
+            .load(url)
+            .override(mContext.resources.displayMetrics.widthPixels, mContext.resources.displayMetrics.widthPixels / 3)
+            .centerCrop()
+            .bitmapTransform(
+                RoundedCornersTransformation(
+                    bitmapPool,
+                    mContext.resources.getDimensionPixelSize(R.dimen.detail_rg_radius),
+                    0
+                )
+            )
+            .error(R.drawable.film_poster_placeholder)
+            .placeholder(R.drawable.film_poster_placeholder)
+            .into(ivSimilarImg)
 
         tvSimilarTitle.text = similarList[position].title
     }
 }
 
-class SimilarGridAdapter(private val mContext: Context, private var similarList: MutableList<MovieMainResponse.Movie>) : RecyclerView.Adapter<SimilarGridHolder>() {
+class SimilarGridAdapter(private val mContext: Context, private var similarList: MutableList<MovieMainResponse.Movie>) :
+    RecyclerView.Adapter<SimilarGridHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimilarGridHolder {
         val view = LayoutInflater.from(mContext).inflate(R.layout.view_similar_list_item, parent, false)

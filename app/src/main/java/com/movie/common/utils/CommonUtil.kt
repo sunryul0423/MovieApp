@@ -1,15 +1,14 @@
 package com.movie.common.utils
 
-import com.movie.common.constants.MovieConstant
-
+import com.movie.common.constants.*
 
 object CommonUtil {
 
     fun getParam(): Map<String, String> {
-        return hashMapOf(MovieConstant.API_KEY to MovieConstant.TMDB_API_KEY, MovieConstant.LANGUAGE to MovieConstant.LANGUAGE_KO)
+        return hashMapOf(API_KEY to TMDB_API_KEY, LANGUAGE to LANGUAGE_KO)
     }
 
     fun getSearchParam(text: String): Map<String, String> {
-        return hashMapOf(MovieConstant.API_KEY to MovieConstant.TMDB_API_KEY, MovieConstant.LANGUAGE to MovieConstant.LANGUAGE_KO, MovieConstant.REGION to MovieConstant.LANGUAGE_KO, MovieConstant.QUERY to text)
+        return hashMapOf(API_KEY to TMDB_API_KEY, LANGUAGE to LANGUAGE_KO, REGION to LANGUAGE_KO, QUERY to text)
     }
 }

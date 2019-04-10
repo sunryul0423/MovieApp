@@ -2,13 +2,13 @@ package com.movie.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.movie.R
-import com.movie.common.constants.MovieConstant
+import com.movie.common.constants.DETAIL_CREDIT_CAST
 import com.movie.customview.adapter.CreditListAdapter
 import com.movie.customview.adapter.RecyclerViewDecoration
 import com.movie.model.data.CreaditInfoModel
@@ -25,7 +25,7 @@ class MovieDetailCreditCastFragment : BaseFragment() {
         fun newInstance(creditResponse: CreditResponse): MovieDetailCreditCastFragment {
             val fragment = MovieDetailCreditCastFragment()
             val arg = Bundle()
-            arg.putSerializable(MovieConstant.DETAIL_CREDIT_CAST, creditResponse)
+            arg.putSerializable(DETAIL_CREDIT_CAST, creditResponse)
             fragment.arguments = arg
             return fragment
         }
@@ -38,7 +38,7 @@ class MovieDetailCreditCastFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        castList = (arguments?.getSerializable(MovieConstant.DETAIL_CREDIT_CAST) as CreditResponse).cast
+        castList = (arguments?.getSerializable(DETAIL_CREDIT_CAST) as CreditResponse).cast
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -52,16 +52,14 @@ class MovieDetailCreditCastFragment : BaseFragment() {
 
         val creaditInfoList: MutableList<CreaditInfoModel> = mutableListOf()
         for (i in castList.indices) {
-            val creaditInfoModel = CreaditInfoModel()
-            creaditInfoModel.url = castList[i].profilePath
-            creaditInfoModel.name = castList[i].name
-            creaditInfoModel.part = castList[i].character
+            val creaditInfoModel = CreaditInfoModel(castList[i].profilePath, castList[i].name, castList[i].character)
             creaditInfoList.add(creaditInfoModel)
         }
         val creditListAdapter = CreditListAdapter(mContext, creaditInfoList)
         rvSimilar.setHasFixedSize(true)
         val spacing: Int = resources.getDimensionPixelSize(R.dimen.detail_overview_credit_divider)
-        val recyclerViewDecoration = RecyclerViewDecoration(true, 3, RecyclerViewSpacing(spacing, spacing, spacing, spacing))
+        val recyclerViewDecoration =
+            RecyclerViewDecoration(true, 3, RecyclerViewSpacing(spacing, spacing, spacing, spacing))
         rvSimilar.addItemDecoration(recyclerViewDecoration)
         rvSimilar.layoutManager = GridLayoutManager(mContext, 3)
         rvSimilar.adapter = creditListAdapter
