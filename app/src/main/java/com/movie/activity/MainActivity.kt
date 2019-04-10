@@ -6,24 +6,19 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.viewpager.widget.ViewPager
 import com.movie.R
 import com.movie.`interface`.IActionBarClick
-import com.movie.`interface`.IRxResult
 import com.movie.common.constants.FINISH_INTERVAL_TIME
-import com.movie.common.constants.NOW_PALY_PAGER_COUNT
 import com.movie.common.constants.PAGER_COUNT
-import com.movie.common.constants.POPULAR_COUNT
-import com.movie.common.utils.CommonUtil
 import com.movie.customview.adapter.CustomListAdapter
 import com.movie.customview.adapter.UpcomingPagerAdapter
 import com.movie.customview.view.CoustomDrawerView
 import com.movie.customview.view.CustomIndicator
 import com.movie.databinding.ActivityMainBinding
-import com.movie.model.data.MovieMainResponse
+import com.movie.model.view.MainViewModel
+import com.movie.model.view.MainViewModelFactory
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -32,8 +27,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private var backPressedTime: Long = 0L
 
-    private lateinit var srlRefreshView: SwipeRefreshLayout
-    private lateinit var dlView: DrawerLayout
     private lateinit var abToggle: ActionBarDrawerToggle
     private lateinit var cvDrawerView: CoustomDrawerView
     private lateinit var cvIndicator: CustomIndicator
@@ -41,43 +34,51 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var rvPopular: RecyclerView
     private lateinit var rvTopRated: RecyclerView
 
+    private lateinit var mainViewModelFactory: MainViewModelFactory
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mContext = this
         initActionBar(false, getString(R.string.ab_main_title))
 
+        mainViewModelFactory = MainViewModelFactory(apiRequest, UpcomingPagerAdapter(), CustomListAdapter())
+        // 바인딩 뷰-모델 연결
+        val mainViewModel = ViewModelProviders.of(this, mainViewModelFactory).get(MainViewModel::class.java)
+        viewBinding.mainViewModel = mainViewModel
+        viewBinding.lifecycleOwner = this
+
+
         setView()
         coustomActionBar.setActionBarLeftClick(object : IActionBarClick() {
             override fun onLeftClick() {
                 //슬라이드 메뉴
-                dlView.openDrawer(cvDrawerView)
+                viewBinding.dlView.openDrawer(cvDrawerView)
             }
         })
     }
 
     override fun onPause() {
-        dlView.closeDrawer(cvDrawerView)
+        viewBinding.dlView.closeDrawer(cvDrawerView)
         super.onPause()
     }
 
 
     private fun setView() {
-        srlRefreshView = findViewById(R.id.srl_refresh_view)
-        srlRefreshView.setOnRefreshListener {
+        viewBinding.srlRefreshView.setOnRefreshListener {
             reqeustApi()
-            srlRefreshView.isRefreshing = false
+            viewBinding.srlRefreshView.isRefreshing = false
         }
-        dlView = findViewById(R.id.dl_view)
-        abToggle = object : ActionBarDrawerToggle(this, dlView, R.string.ab_main_title, R.string.ab_main_title) {
+        abToggle =
+            object : ActionBarDrawerToggle(this, viewBinding.dlView, R.string.ab_main_title, R.string.ab_main_title) {
 
-            override fun onDrawerClosed(drawerView: View) {
-                super.onDrawerClosed(drawerView)
-                dlView.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                override fun onDrawerClosed(drawerView: View) {
+                    super.onDrawerClosed(drawerView)
+                    viewBinding.dlView.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                }
             }
-        }
-        dlView.addDrawerListener(abToggle)
-        dlView.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        viewBinding.dlView.addDrawerListener(abToggle)
+        viewBinding.dlView.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         cvDrawerView = findViewById(R.id.cv_drawer_view)
 
         cvIndicator = findViewById(R.id.cv_indicator)
@@ -205,8 +206,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun onBackPressed() {
         val currentTime = System.currentTimeMillis()
         val intervalTime = currentTime - backPressedTime
-        if (dlView.isDrawerOpen(cvDrawerView)) {
-            dlView.closeDrawer(cvDrawerView)
+        if (viewBinding.dlView.isDrawerOpen(cvDrawerView)) {
+            viewBinding.dlView.closeDrawer(cvDrawerView)
         } else {
             if (intervalTime in 0..FINISH_INTERVAL_TIME) {
                 super.onBackPressed()

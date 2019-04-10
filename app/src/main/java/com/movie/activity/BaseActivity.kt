@@ -9,6 +9,8 @@ import androidx.databinding.ViewDataBinding
 import com.movie.R
 import com.movie.`interface`.IActionBarClick
 import com.movie.customview.view.CoustomActionBar
+import com.movie.model.request.ApiRequest
+import org.koin.android.ext.android.inject
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
@@ -19,6 +21,8 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     protected lateinit var viewBinding: T
 
     protected abstract val layoutResourceId: Int
+
+    protected val apiRequest: ApiRequest by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

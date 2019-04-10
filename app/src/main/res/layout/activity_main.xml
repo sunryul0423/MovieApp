@@ -50,11 +50,10 @@
                                 android:addStatesFromChildren="true">
 
                             <androidx.viewpager2.widget.ViewPager2
-                                    android:id="@+id/vp_upcoming"
                                     android:layout_width="match_parent"
                                     android:layout_height="@dimen/main_pager_height"
-                                    pager_adapter="@{mainViewModel.upcomingPagerAdapter}"
-                                    pager_item="@{mainViewModel.movieList}"/>
+                                    app:adapter="@{mainViewModel.upcomingPagerAdapter}"
+                            />
 
                             <com.movie.customview.view.CustomIndicator
                                     android:id="@+id/cv_indicator"
@@ -81,7 +80,9 @@
                                 android:id="@+id/rv_now_screen"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:nestedScrollingEnabled="true"/>
+                                android:nestedScrollingEnabled="true"
+                                app:recycler_adapter="@{mainViewModel.nowPlayingAdapter}"
+                        />
 
                         <TextView
                                 android:layout_width="wrap_content"

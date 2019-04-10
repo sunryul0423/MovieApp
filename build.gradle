@@ -5,7 +5,7 @@ buildscript {
     ext {
         // SDK and tools
         compileSdkVersion = 28
-        minSdkVersion = 21
+        minSdkVersion = 23
         targetSdkVersion = 28
 
         //Gradle

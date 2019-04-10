@@ -73,43 +73,35 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-//    // android_X
+    // android_X
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation "androidx.core:core-ktx:$coreVersion"
-    implementation "androidx.multidex:multidex:2.0.1"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
-    implementation "androidx.viewpager2:viewpager2:1.0.0-alpha03"
-
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha03'
     // Rx
     implementation 'io.reactivex.rxjava2:rxjava:2.2.3'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-
     // Koin
     implementation 'org.koin:koin-android:1.0.2'
-    implementation "org.koin:koin-androidx-scope:1.0.2"
-
+    implementation 'org.koin:koin-androidx-scope:1.0.2'
     // Glide
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'jp.wasabeef:glide-transformations:1.0.6'
-
     // Http
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
-
     // Test
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
-
     androidTestImplementation "androidx.test:runner:$androidXTestVersion"
     androidTestImplementation "androidx.test:rules:$androidXTestVersion"
     androidTestImplementation "androidx.test.ext:junit:$runnerExtVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-
 }

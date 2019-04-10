@@ -41,7 +41,7 @@ class UpcomingPagerHolder(private val binding: ViewPagerLayoutBinding) : Recycle
 
 class UpcomingPagerAdapter : RecyclerView.Adapter<UpcomingPagerHolder>() {
 
-    private lateinit var movieList: List<MovieMainResponse.Movie>
+    private var movieList: List<MovieMainResponse.Movie> = mutableListOf()
 
     fun setItem(_movieList: List<MovieMainResponse.Movie>) {
         movieList = _movieList
