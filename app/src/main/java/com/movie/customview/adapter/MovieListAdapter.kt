@@ -30,6 +30,7 @@ class MovieListHolder(private val binding: ViewMovieListItemBinding) : RecyclerV
             intent.putExtra(MOVIE_ID, movieList[position].id)
             ActivityCompat.startActivity(context, intent, null)
         }
+
         val url = IMAGE_URL + movieList[position].posterPath
         Glide.with(context)
             .load(url)
@@ -53,9 +54,15 @@ class MovieListHolder(private val binding: ViewMovieListItemBinding) : RecyclerV
 class CustomListAdapter : RecyclerView.Adapter<MovieListHolder>() {
 
     private var movieList: List<MovieMainResponse.Movie> = mutableListOf()
+    private var isVote: Boolean = false
 
-    fun setItem(_movieList: List<MovieMainResponse.Movie>) {
-        movieList = _movieList
+    fun setItem(_movieList: List<MovieMainResponse.Movie>?, _isVote: Boolean) {
+        movieList = if (_movieList.isNullOrEmpty()) {
+            mutableListOf()
+        } else {
+            _movieList
+        }
+        isVote = _isVote
         notifyDataSetChanged()
     }
 
@@ -70,7 +77,7 @@ class CustomListAdapter : RecyclerView.Adapter<MovieListHolder>() {
     }
 
     override fun onBindViewHolder(holder: MovieListHolder, position: Int) {
-        holder.setData(false, movieList, position)
+        holder.setData(isVote, movieList, position)
     }
 
 }

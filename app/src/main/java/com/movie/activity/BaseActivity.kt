@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.movie.R
-import com.movie.`interface`.IActionBarClick
+import com.movie.interfaces.IActionBarClick
 import com.movie.customview.view.CoustomActionBar
 import com.movie.model.request.ApiRequest
 import org.koin.android.ext.android.inject

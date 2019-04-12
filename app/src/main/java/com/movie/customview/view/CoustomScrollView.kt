@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.widget.NestedScrollView
-import com.movie.`interface`.OnScrollListener
+import com.movie.interfaces.OnScrollListener
 
 class CoustomScrollView : NestedScrollView {
 

@@ -3,8 +3,10 @@ package com.movie.model.view
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.movie.common.constants.NOW_PALY_PAGER_COUNT
 import com.movie.common.constants.PAGER_COUNT
+import com.movie.common.constants.POPULAR_COUNT
 import com.movie.common.utils.CommonUtil
 import com.movie.customview.adapter.CustomListAdapter
 import com.movie.customview.adapter.UpcomingPagerAdapter
@@ -15,26 +17,34 @@ import io.reactivex.schedulers.Schedulers
 
 class MainViewModel(
     private val apiRequest: ApiRequest,
-    private val __upcomingPagerAdapter: UpcomingPagerAdapter,
-    private val _customListAdapter: CustomListAdapter
-
+    private val __upcomingPagerAdapter: UpcomingPagerAdapter
 ) : BaseViewModel() {
 
-
+    private val _isRefresh = MutableLiveData<Boolean>()
     private val _upcomingPagerAdapter = MutableLiveData<UpcomingPagerAdapter>().apply { value = __upcomingPagerAdapter }
-    private val _nowPlayingAdapter = MutableLiveData<CustomListAdapter>().apply { value = _customListAdapter }
-    private val _upcomingMovieList = MutableLiveData<List<MovieMainResponse.Movie>>() //내부에서 변경
-    private val _nowPlayingMovieList = MutableLiveData<List<MovieMainResponse.Movie>>() //내부에서 변경
+
+    private val _upcomingMovieList = MutableLiveData<List<MovieMainResponse.Movie>>()
+    private val _nowScreenList = MutableLiveData<List<MovieMainResponse.Movie>>()
+    private val _popularList = MutableLiveData<List<MovieMainResponse.Movie>>()
+    private val _topRatedList = MutableLiveData<List<MovieMainResponse.Movie>>()
 
 
     val upcomingPagerAdapter: LiveData<UpcomingPagerAdapter> get() = _upcomingPagerAdapter
-    val nowPlayingAdapter: LiveData<CustomListAdapter> get() = _nowPlayingAdapter
-    val upcomingMovieList: LiveData<List<MovieMainResponse.Movie>> get() = _upcomingMovieList //여기에 저장
-    val nowPlayingMovieList: LiveData<List<MovieMainResponse.Movie>> get() = _nowPlayingMovieList //여기에 저장
+    val nowScreenAdapter: CustomListAdapter = CustomListAdapter()
+    val popularAdapter: CustomListAdapter = CustomListAdapter()
+    val topRatedAdapter: CustomListAdapter = CustomListAdapter()
+
+    val isRefresh: LiveData<Boolean> get() = _isRefresh
+    val upcomingMovieList: LiveData<List<MovieMainResponse.Movie>> get() = _upcomingMovieList
+    val nowScreenList: LiveData<List<MovieMainResponse.Movie>> get() = _nowScreenList
+    val popularList: LiveData<List<MovieMainResponse.Movie>> get() = _popularList
+    val topRatedList: LiveData<List<MovieMainResponse.Movie>> get() = _topRatedList
 
     init {
         requestApi()
     }
+
+
 
     fun requestApi() {
 //        var progress: ProgressDialog = ProgressDialog(mContext)
@@ -61,14 +71,46 @@ class MainViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     if (NOW_PALY_PAGER_COUNT < it.results.size) {
-                        _nowPlayingMovieList.value = it.results.subList(0, NOW_PALY_PAGER_COUNT)
+                        _nowScreenList.value = it.results.subList(0, NOW_PALY_PAGER_COUNT)
                     } else {
-                        _nowPlayingMovieList.value = it.results
+                        _nowScreenList.value = it.results
                     }
                 }, {
                     //차후 Fabric에 등록
                     Log.d("srpark", it.javaClass.simpleName + "실패 : " + it.toString())
                 })
         )
+
+        addDisposable(
+            apiRequest.getPopular(CommonUtil.getParam())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (POPULAR_COUNT < it.results.size) {
+                        _popularList.value = it.results.subList(0, POPULAR_COUNT)
+                    } else {
+                        _popularList.value = it.results
+                    }
+                }, {
+                    //차후 Fabric에 등록
+                    Log.d("srpark", it.javaClass.simpleName + "실패 : " + it.toString())
+                })
+        )
+        addDisposable(
+            apiRequest.getTopRated(CommonUtil.getParam())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (POPULAR_COUNT < it.results.size) {
+                        _topRatedList.value = it.results.subList(0, POPULAR_COUNT)
+                    } else {
+                        _topRatedList.value = it.results
+                    }
+                }, {
+                    //차후 Fabric에 등록
+                    Log.d("srpark", it.javaClass.simpleName + "실패 : " + it.toString())
+                })
+        )
+
     }
 }

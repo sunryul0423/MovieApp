@@ -8,12 +8,10 @@ import com.movie.model.request.ApiRequest
 
 class MainViewModelFactory(
     private val apiRequest: ApiRequest,
-    private val upcomingPagerAdapter: UpcomingPagerAdapter,
-    private val customListAdapter: CustomListAdapter
-) :
-    ViewModelProvider.Factory {
+    private val upcomingPagerAdapter: UpcomingPagerAdapter
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return MainViewModel(apiRequest, upcomingPagerAdapter, customListAdapter) as T
+        return MainViewModel(apiRequest, upcomingPagerAdapter) as T
     }
 }

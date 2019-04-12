@@ -43,8 +43,12 @@ class UpcomingPagerAdapter : RecyclerView.Adapter<UpcomingPagerHolder>() {
 
     private var movieList: List<MovieMainResponse.Movie> = mutableListOf()
 
-    fun setItem(_movieList: List<MovieMainResponse.Movie>) {
-        movieList = _movieList
+    fun setItem(_movieList: List<MovieMainResponse.Movie>?) {
+        movieList = if (_movieList.isNullOrEmpty()) {
+            mutableListOf()
+        } else {
+            _movieList
+        }
         notifyDataSetChanged()
     }
 

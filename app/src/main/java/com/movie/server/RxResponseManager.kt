@@ -3,7 +3,7 @@ package com.movie.server
 import android.content.Context
 import android.os.Handler
 import android.util.Log
-import com.movie.`interface`.IRxResult
+import com.movie.interfaces.IRxResult
 import com.movie.dialog.ProgressDialog
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

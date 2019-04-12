@@ -7,14 +7,10 @@ import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
 import com.movie.R
-import com.movie.`interface`.IRxResult
-import com.movie.`interface`.IScrollChangeListener
-import com.movie.`interface`.OnScrollListener
-import com.movie.common.constants.IMAGE_URL
+import com.movie.interfaces.IScrollChangeListener
+import com.movie.interfaces.OnScrollListener
 import com.movie.common.constants.MOVIE_ID
-import com.movie.common.utils.CommonUtil
 import com.movie.customview.view.CoustomScrollView
 import com.movie.databinding.ActivityDetailMovieBinding
 import com.movie.fragment.MovieDetailOverviewFragment

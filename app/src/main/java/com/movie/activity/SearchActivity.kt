@@ -8,13 +8,10 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.movie.R
-import com.movie.`interface`.IRxResult
 import com.movie.common.constants.SEARCH_SPAN_COUNT
-import com.movie.common.utils.CommonUtil
 import com.movie.customview.adapter.RecyclerViewDecoration
 import com.movie.customview.adapter.SimilarGridAdapter
 import com.movie.databinding.ActivitySearchBinding
-import com.movie.model.data.MovieMainResponse
 import com.movie.model.data.RecyclerViewSpacing
 
 class SearchActivity : BaseActivity<ActivitySearchBinding>(), View.OnClickListener {

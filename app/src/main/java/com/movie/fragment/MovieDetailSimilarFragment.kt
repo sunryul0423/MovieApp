@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.movie.R
-import com.movie.`interface`.IRxResult
-import com.movie.`interface`.IScrollChangeListener
+import com.movie.interfaces.IRxResult
+import com.movie.interfaces.IScrollChangeListener
 import com.movie.activity.DetailMovieActivity
 import com.movie.common.constants.MOVIE_ID
 import com.movie.common.utils.CommonUtil

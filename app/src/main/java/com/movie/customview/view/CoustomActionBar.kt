@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.movie.R
-import com.movie.`interface`.IActionBarClick
+import com.movie.interfaces.IActionBarClick
 
 class CoustomActionBar : LinearLayout, View.OnClickListener {
 

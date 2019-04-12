@@ -1,4 +1,4 @@
-package com.movie.`interface`
+package com.movie.interfaces
 
 interface IRxResult {
 

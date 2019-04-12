@@ -13,8 +13,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.movie.R
-import com.movie.`interface`.IRxResult
-import com.movie.`interface`.IScrollChangeListener
+import com.movie.interfaces.IRxResult
+import com.movie.interfaces.IScrollChangeListener
 import com.movie.activity.DetailCreditActivity
 import com.movie.activity.DetailMovieActivity
 import com.movie.common.constants.*

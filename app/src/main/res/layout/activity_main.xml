@@ -31,7 +31,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="-4dp"
-                    android:background="@android:color/transparent">
+                    android:background="@android:color/transparent"
+                    app:onRefreshListener="@{() -> mainViewModel.requestApi()}"
+                    isRefresh="@{false}"
+            >
 
                 <androidx.core.widget.NestedScrollView
                         android:layout_width="match_parent"
@@ -46,13 +49,13 @@
 
                         <FrameLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="@dimen/main_pager_height"
                                 android:addStatesFromChildren="true">
 
                             <androidx.viewpager2.widget.ViewPager2
                                     android:layout_width="match_parent"
-                                    android:layout_height="@dimen/main_pager_height"
-                                    app:adapter="@{mainViewModel.upcomingPagerAdapter}"
+                                    android:layout_height="match_parent"
+
                             />
 
                             <com.movie.customview.view.CustomIndicator
@@ -81,7 +84,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:nestedScrollingEnabled="true"
-                                app:recycler_adapter="@{mainViewModel.nowPlayingAdapter}"
+                                recyclerAdapter="@{mainViewModel.nowScreenAdapter}"
+                                recyclerItem="@{mainViewModel.nowScreenList}"
+                                isVote="@{true}"
                         />
 
                         <TextView
@@ -98,6 +103,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:nestedScrollingEnabled="true"
+                                recyclerAdapter="@{mainViewModel.popularAdapter}"
+                                recyclerItem="@{mainViewModel.popularList}"
+                                isVote="@{false}"
                         />
 
                         <TextView
@@ -113,7 +121,11 @@
                                 android:id="@+id/rv_top_rated"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:nestedScrollingEnabled="true"/>
+                                android:nestedScrollingEnabled="true"
+                                recyclerAdapter="@{mainViewModel.topRatedAdapter}"
+                                recyclerItem="@{mainViewModel.topRatedList}"
+                                isVote="@{false}"
+                        />
 
                     </LinearLayout>
 
