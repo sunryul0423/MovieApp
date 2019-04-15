@@ -15,10 +15,14 @@ import com.movie.common.constants.MOVIE_ID
 import com.movie.common.utils.CommonUtil
 import com.movie.customview.adapter.RecyclerViewDecoration
 import com.movie.customview.adapter.SimilarGridAdapter
+import com.movie.databinding.FragmentDetailSimilarBinding
 import com.movie.model.data.MovieMainResponse
 import com.movie.model.data.RecyclerViewSpacing
 
-class MovieDetailSimilarFragment : BaseFragment() {
+class MovieDetailSimilarFragment : BaseFragment<FragmentDetailSimilarBinding>() {
+
+    override val layoutResourceId: Int
+        get() = R.layout.fragment_detail_similar
 
     private var movieId: Int = 0
 
@@ -49,7 +53,7 @@ class MovieDetailSimilarFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_detail_similar, container, false)
         setView(view)
-        requestApi()
+//        requestApi()
         return view
     }
 
@@ -63,19 +67,19 @@ class MovieDetailSimilarFragment : BaseFragment() {
         rvSimilar.layoutManager = GridLayoutManager(mContext, 2)
     }
 
-    private fun requestApi() {
-        rxResponseManager.add(apiRequest.getSimilar(movieId, CommonUtil.getParam()), object : IRxResult {
-
-            override fun <T> onNext(response: T) {
-                val similarList: MutableList<MovieMainResponse.Movie> = (response as MovieMainResponse).results
-                val similarGridAdapter = SimilarGridAdapter(mContext, similarList)
-                rvSimilar.adapter = similarGridAdapter
-            }
-
-            override fun onErrer(error: Throwable) {
-            }
-        })
-    }
+//    private fun requestApi() {
+//        rxResponseManager.add(apiRequest.getSimilar(movieId, CommonUtil.getParam()), object : IRxResult {
+//
+//            override fun <T> onNext(response: T) {
+//                val similarList: MutableList<MovieMainResponse.Movie> = (response as MovieMainResponse).results
+//                val similarGridAdapter = SimilarGridAdapter(mContext, similarList)
+//                rvSimilar.adapter = similarGridAdapter
+//            }
+//
+//            override fun onErrer(error: Throwable) {
+//            }
+//        })
+//    }
 
 
 }

@@ -13,8 +13,8 @@ class CustomIndicator : LinearLayout {
 
     private val mContext: Context
 
-    private var animDuration: Int = 300
-    private var itemMargin: Int = 10
+    private var mAnimDuration: Int = 300
+    private var mItemMargin: Int = 10
     private var mDefaultCircle: Int = 0
     private var mSelectCircle: Int = 0
     private lateinit var imageDot: Array<ImageView?>
@@ -27,24 +27,18 @@ class CustomIndicator : LinearLayout {
         mContext = context
     }
 
-    fun setAnimDuration(animDuration: Int) {
-        this.animDuration = animDuration
-    }
-
-    fun setItemMargin(itemMargin: Int) {
-        this.itemMargin = itemMargin
-    }
-
-    fun createDotPanel(count: Int, defaultCircle: Int, selectCircle: Int) {
-
+    fun createDotPanel(itemMargin: Int, animDuration: Int, count: Int, defaultCircle: Int, selectCircle: Int) {
+        mItemMargin = itemMargin
+        mAnimDuration = animDuration
         mDefaultCircle = defaultCircle
         mSelectCircle = selectCircle
 
         imageDot = arrayOfNulls(count)
 
+//        removeAllViews()
         for (i in 0 until count) {
             imageDot[i] = ImageView(mContext)
-            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            val params = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
             params.topMargin = itemMargin
             params.bottomMargin = itemMargin
             params.leftMargin = itemMargin
@@ -77,31 +71,35 @@ class CustomIndicator : LinearLayout {
     }
 
     private fun selectScaleAnim(view: View, startScale: Float, endScale: Float) {
-        val anim = ScaleAnimation(startScale,
-                endScale,
-                startScale,
-                endScale,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f)
+        val anim = ScaleAnimation(
+            startScale,
+            endScale,
+            startScale,
+            endScale,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
         anim.fillAfter = true
-        anim.duration = animDuration.toLong()
+        anim.duration = mAnimDuration.toLong()
         view.startAnimation(anim)
         view.setTag(view.id, true)
     }
 
     private fun defaultScaleAnim(view: View, startScale: Float, endScale: Float) {
-        val anim = ScaleAnimation(startScale,
-                endScale,
-                startScale,
-                endScale,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f)
+        val anim = ScaleAnimation(
+            startScale,
+            endScale,
+            startScale,
+            endScale,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
         anim.fillAfter = true
-        anim.duration = animDuration.toLong()
+        anim.duration = mAnimDuration.toLong()
         view.startAnimation(anim)
         view.setTag(view.id, false)
     }

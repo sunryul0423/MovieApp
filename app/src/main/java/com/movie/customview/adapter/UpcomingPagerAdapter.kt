@@ -1,68 +1,63 @@
 package com.movie.customview.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import androidx.viewpager.widget.PagerAdapter
 import com.movie.R
 import com.movie.activity.DetailMovieActivity
-import com.movie.common.constants.IMAGE_URL
 import com.movie.common.constants.MOVIE_ID
 import com.movie.databinding.ViewPagerLayoutBinding
-import com.movie.model.data.MovieMainResponse
+import com.movie.model.view.PagerViewModel
 
+class UpcomingPagerAdapter : PagerAdapter() {
 
-class UpcomingPagerHolder(private val binding: ViewPagerLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    private var pagerViewModelList: MutableList<PagerViewModel> = mutableListOf()
 
-    private val context: Context = binding.root.context
-
-    internal fun setData(movieList: List<MovieMainResponse.Movie>, position: Int) {
-        binding.flPagerItem.setOnClickListener {
-            val intent = Intent(context, DetailMovieActivity::class.java)
-            intent.putExtra(MOVIE_ID, movieList[position].id)
-            ActivityCompat.startActivity(context, intent, null)
-        }
-
-        val url = IMAGE_URL + movieList[position].backdropPath
-        Glide.with(context)
-            .load(url)
-            .override(context.resources.displayMetrics.widthPixels, context.resources.displayMetrics.widthPixels / 3)
-            .error(R.drawable.film_poster_placeholder)
-            .placeholder(R.drawable.film_poster_placeholder)
-            .into(binding.ivMovieItem)
-
-        binding.tvMovieTitle.text = movieList[position].title
-    }
-}
-
-class UpcomingPagerAdapter : RecyclerView.Adapter<UpcomingPagerHolder>() {
-
-    private var movieList: List<MovieMainResponse.Movie> = mutableListOf()
-
-    fun setItem(_movieList: List<MovieMainResponse.Movie>?) {
-        movieList = if (_movieList.isNullOrEmpty()) {
+    fun setItem(_pagerViewModelList: MutableList<PagerViewModel>) {
+        pagerViewModelList = if (_pagerViewModelList.isNullOrEmpty()) {
             mutableListOf()
         } else {
-            _movieList
+            _pagerViewModelList
         }
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpcomingPagerHolder {
+    override fun getItemPosition(`object`: Any): Int {
+        return POSITION_NONE
+    }
+
+    override fun getCount(): Int {
+        return pagerViewModelList.size
+    }
+
+    override fun isViewFromObject(view: View, `object`: Any): Boolean {
+        return view == `object`
+    }
+
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val binding: ViewPagerLayoutBinding =
-            DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.view_pager_layout, parent, false)
-        return UpcomingPagerHolder(binding)
+            DataBindingUtil.inflate(
+                LayoutInflater.from(container.context),
+                R.layout.view_pager_layout,
+                container,
+                false
+            )
+        binding.pagerViewModel = pagerViewModelList[position]
+
+        binding.flPagerItem.setOnClickListener {
+            val intent = Intent(container.context, DetailMovieActivity::class.java)
+            intent.putExtra(MOVIE_ID, pagerViewModelList[position].id.value)
+            ActivityCompat.startActivity(container.context, intent, null)
+        }
+        container.addView(binding.root, position)
+        return binding.root
     }
 
-    override fun getItemCount(): Int {
-        return movieList.size
-    }
-
-    override fun onBindViewHolder(holder: UpcomingPagerHolder, position: Int) {
-        holder.setData(movieList, position)
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        container.removeView(`object` as View)
     }
 }

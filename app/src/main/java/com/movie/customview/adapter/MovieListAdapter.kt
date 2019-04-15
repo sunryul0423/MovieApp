@@ -47,7 +47,6 @@ class MovieListHolder(private val binding: ViewMovieListItemBinding) : RecyclerV
         } else {
             binding.tvVoteAverage.visibility = View.GONE
         }
-
     }
 }
 
@@ -79,6 +78,4 @@ class CustomListAdapter : RecyclerView.Adapter<MovieListHolder>() {
     override fun onBindViewHolder(holder: MovieListHolder, position: Int) {
         holder.setData(isVote, movieList, position)
     }
-
 }
-

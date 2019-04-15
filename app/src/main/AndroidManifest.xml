@@ -15,6 +15,10 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
 
+        <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="49a93bcc1d05e4e804304a88c6ed0173d99c504c"/>
+
         <activity
                 android:name="com.movie.activity.MainActivity"
                 android:theme="@style/AppTheme">

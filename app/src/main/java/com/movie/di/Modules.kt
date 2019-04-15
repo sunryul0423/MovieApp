@@ -11,6 +11,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+/**
+ * API 모듈은 싱글톤으로 생성
+ */
 val apiModule = module {
     single {
         Retrofit.Builder()
@@ -39,4 +42,4 @@ val apiModule = module {
     }
 }
 
-val appModule = listOf(apiModule, detailCreditModule)
+val appModule = listOf(apiModule, detailCreditModule, movieDetailCreditModule)

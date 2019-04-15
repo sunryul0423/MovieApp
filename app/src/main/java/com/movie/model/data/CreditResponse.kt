@@ -3,36 +3,35 @@ package com.movie.model.data
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class CreditResponse : Serializable {
+data class CreditResponse(
+    var id: Int,
+    var cast: List<Cast>,
+    var crew: List<Crew>
+) : Serializable {
 
-    var id = 0
-    var cast: List<Cast> = emptyList()
-    var crew: List<Crew> = emptyList()
-
-    inner class Cast : Serializable {
-
+    data class Cast(
         @SerializedName("cast_id")
-        var castId = 0
-        var character = ""
+        var castId: Int,
+        var character: String,
         @SerializedName("credit_id")
-        var creditId = ""
-        var gender = 1
-        var id = 0
-        var name = ""
-        var order = 0
+        var creditId: String,
+        var gender: Int,
+        var id: Int,
+        var name: String,
+        var order: Int,
         @SerializedName("profile_path")
-        var profilePath = ""
-    }
+        var profilePath: String
+    ) : Serializable
 
-    inner class Crew : Serializable {
+    data class Crew(
         @SerializedName("credit_id")
-        var creditId = ""
-        var department = ""
-        var gender = 1
-        var id = 0
-        var job = ""
-        var name = ""
+        var creditId: String,
+        var department: String,
+        var gender: Int,
+        var id: Int,
+        var job: String,
+        var name: String,
         @SerializedName("profile_path")
-        var profilePath = ""
-    }
+        var profilePath: String
+    ) : Serializable
 }

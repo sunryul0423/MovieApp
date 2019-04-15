@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/detail_btn_top_margin">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/detail_btn_top_margin">
 
-    <TextView
-        android:id="@+id/tv_detail_info_title"
-        android:layout_width="@dimen/detail_info_title_width"
-        android:layout_height="wrap_content"
-        android:textColor="@color/main_back_drop_holder" />
+        <TextView
+                android:id="@+id/tv_detail_info_title"
+                android:layout_width="@dimen/detail_info_title_width"
+                android:layout_height="wrap_content"
+                android:textColor="@color/main_back_drop_holder"/>
 
-    <TextView
-        android:id="@+id/tv_detail_info_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/main_back_drop_holder" />
+        <TextView
+                android:id="@+id/tv_detail_info_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/main_back_drop_holder"/>
 
-</LinearLayout>
+    </LinearLayout>
+</layout>

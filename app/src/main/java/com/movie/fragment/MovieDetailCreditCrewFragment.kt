@@ -5,20 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.ViewModelProviders
 import com.movie.R
 import com.movie.common.constants.DETAIL_CREDIT_CREW
-import com.movie.customview.adapter.CreditListAdapter
-import com.movie.customview.adapter.RecyclerViewDecoration
-import com.movie.model.data.CreaditInfoModel
+import com.movie.databinding.FragmentDetailSimilarBinding
 import com.movie.model.data.CreditResponse
-import com.movie.model.data.RecyclerViewSpacing
+import com.movie.model.view.MovieDetailCreditViewModel
+import com.movie.model.view.MovieDetailCreditViewModelFactory
+import org.koin.android.ext.android.inject
 
-class MovieDetailCreditCrewFragment : BaseFragment() {
+class MovieDetailCreditCrewFragment : BaseFragment<FragmentDetailSimilarBinding>() {
+
+    override val layoutResourceId: Int
+        get() = R.layout.fragment_detail_similar
 
     var crewList: List<CreditResponse.Crew> = emptyList()
-    private lateinit var rvSimilar: RecyclerView
+
+    private val movieDetailCreditViewModelFactory: MovieDetailCreditViewModelFactory by inject()
 
     companion object {
         fun newInstance(creditResponse: CreditResponse): MovieDetailCreditCrewFragment {
@@ -40,26 +43,30 @@ class MovieDetailCreditCrewFragment : BaseFragment() {
         crewList = (arguments?.getSerializable(DETAIL_CREDIT_CREW) as CreditResponse).crew
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val view = inflater.inflate(R.layout.fragment_detail_similar, container, false)
-        setView(view)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        val movieDetailCreditViewModel = ViewModelProviders.of(this, movieDetailCreditViewModelFactory)
+            .get(MovieDetailCreditViewModel::class.java)
+        movieDetailCreditViewModel.setCrewList(crewList)
+        viewBinding.movieDetailCreditViewModel = movieDetailCreditViewModel
+        viewBinding.lifecycleOwner = this
+
         return view
     }
 
-    fun setView(view: View) {
-        rvSimilar = view.findViewById(R.id.rv_similar)
-
-        val creaditInfoList: MutableList<CreaditInfoModel> = mutableListOf()
-        for (i in crewList.indices) {
-            val creaditInfoModel = CreaditInfoModel(crewList[i].profilePath, crewList[i].name, crewList[i].job)
-            creaditInfoList.add(creaditInfoModel)
-        }
-        val creditListAdapter = CreditListAdapter(mContext, creaditInfoList)
-        rvSimilar.setHasFixedSize(true)
-        val spacing: Int = resources.getDimensionPixelSize(R.dimen.detail_overview_credit_divider)
-        val recyclerViewDecoration = RecyclerViewDecoration(true, 3, RecyclerViewSpacing(spacing, spacing, spacing, spacing))
-        rvSimilar.addItemDecoration(recyclerViewDecoration)
-        rvSimilar.layoutManager = GridLayoutManager(mContext, 3)
-        rvSimilar.adapter = creditListAdapter
-    }
+//    fun setView(view: View) {
+//        val creaditInfoList: MutableList<CreaditInfoModel> = mutableListOf()
+//        for (i in crewList.indices) {
+//            val creaditInfoModel = CreaditInfoModel(crewList[i].profilePath, crewList[i].name, crewList[i].job)
+//            creaditInfoList.add(creaditInfoModel)
+//        }
+//        val creditListAdapter = CreditListAdapter(mContext, creaditInfoList)
+//        rvSimilar.setHasFixedSize(true)
+//        val spacing: Int = resources.getDimensionPixelSize(R.dimen.detail_overview_credit_divider)
+//        val recyclerViewDecoration =
+//            RecyclerViewDecoration(true, 3, RecyclerViewSpacing(spacing, spacing, spacing, spacing))
+//        rvSimilar.addItemDecoration(recyclerViewDecoration)
+//        rvSimilar.layoutManager = GridLayoutManager(mContext, 3)
+//        rvSimilar.adapter = creditListAdapter
+//    }
 }
