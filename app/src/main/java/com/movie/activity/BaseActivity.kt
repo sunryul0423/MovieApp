@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import com.movie.R
 import com.movie.interfaces.IActionBarClick
 import com.movie.customview.view.CoustomActionBar
+import com.movie.dialog.ProgressDialog
 import com.movie.model.request.ApiRequest
 import org.koin.android.ext.android.inject
 
@@ -24,9 +25,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     protected val apiRequest: ApiRequest by inject()
 
+    protected lateinit var progress: ProgressDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mContext = this
+        progress = ProgressDialog(this)
         viewBinding = DataBindingUtil.setContentView(this, layoutResourceId)
     }
 

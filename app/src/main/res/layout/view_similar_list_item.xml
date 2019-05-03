@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_similar_list_item"
-    android:layout_width="@dimen/detail_similar_img_width"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/detail_margin">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+            android:id="@+id/ll_similar_list_item"
+            android:layout_width="@dimen/detail_similar_img_width"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/detail_margin">
 
-    <ImageView
-        android:id="@+id/iv_similar_img"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/detail_similar_img_height"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:contentDescription="@null" />
+        <ImageView
+                android:id="@+id/iv_similar_img"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/detail_similar_img_height"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:contentDescription="@null"/>
 
-    <TextView
-        android:id="@+id/tv_similar_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/main_list_title"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="@color/common_text_white" />
+        <TextView
+                android:id="@+id/tv_similar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/main_list_title"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/common_text_white"/>
 
-</LinearLayout>
+    </LinearLayout>
+</layout>

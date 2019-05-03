@@ -37,7 +37,7 @@ class DetailMovieActivity : BaseActivity<ActivityDetailMovieBinding>(), IScrollC
         initActionBar(true, "")
         movieId = intent.getIntExtra(MOVIE_ID, 0)
 
-        detailMovieViewModelFactory = DetailMovieViewModelFactory(apiRequest, movieId)
+        detailMovieViewModelFactory = DetailMovieViewModelFactory(apiRequest, progress, movieId)
         val detailMovieViewModel =
             ViewModelProviders.of(this, detailMovieViewModelFactory).get(DetailMovieViewModel::class.java)
         viewBinding.detailMovieViewModel = detailMovieViewModel

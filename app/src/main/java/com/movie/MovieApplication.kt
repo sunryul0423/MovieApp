@@ -11,6 +11,6 @@ class MovieApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         startKoin(this, appModule)
-//        Fabric.with(this, Crashlytics())
+        Fabric.with(this, Crashlytics())
     }
 }

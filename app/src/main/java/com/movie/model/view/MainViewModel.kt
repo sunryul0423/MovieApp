@@ -105,7 +105,6 @@ class MainViewModel(
                         _popularList.value = it.results
                     }
                 }, {
-                    //차후 Fabric에 등록
                     Crashlytics.logException(it)
                 })
         )
@@ -120,7 +119,6 @@ class MainViewModel(
                         _topRatedList.value = it.results
                     }
                 }, {
-                    //차후 Fabric에 등록
                     Crashlytics.logException(it)
                 })
         )

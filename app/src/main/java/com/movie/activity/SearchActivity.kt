@@ -1,66 +1,52 @@
 package com.movie.activity
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.LinearLayout
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.ViewModelProviders
 import com.movie.R
-import com.movie.common.constants.SEARCH_SPAN_COUNT
-import com.movie.customview.adapter.RecyclerViewDecoration
-import com.movie.customview.adapter.SimilarGridAdapter
 import com.movie.databinding.ActivitySearchBinding
-import com.movie.model.data.RecyclerViewSpacing
+import com.movie.model.view.SearchViewModel
+import com.movie.model.view.SearchViewModelFactory
 
 class SearchActivity : BaseActivity<ActivitySearchBinding>(), View.OnClickListener {
     override val layoutResourceId: Int
         get() = R.layout.activity_search
 
-    private lateinit var rvSearch: RecyclerView
-    private lateinit var etSearchTitle: EditText
-
-    private var correntPage: Int = 1
-    private lateinit var searchGridAdapter: SimilarGridAdapter
+    private lateinit var searchViewModelFactory: SearchViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        searchViewModelFactory = SearchViewModelFactory(apiRequest, progress)
+        val searchViewModel = ViewModelProviders.of(this, searchViewModelFactory).get(SearchViewModel::class.java)
+        viewBinding.searchViewModel = searchViewModel
+        viewBinding.lifecycleOwner = this
         setView()
     }
 
     fun setView() {
-        val llBack: LinearLayout = findViewById(R.id.ll_back)
-        llBack.setOnClickListener(this)
-        val llSearch: LinearLayout = findViewById(R.id.ll_search)
-        llSearch.setOnClickListener(this)
-        rvSearch = findViewById(R.id.rv_search)
-        searchGridAdapter = SimilarGridAdapter(mContext, mutableListOf())
-
-        rvSearch.setHasFixedSize(true)
-        val spacing: Int = resources.getDimensionPixelSize(R.dimen.detail_search_grid_margin)
-        val recyclerViewDecoration = RecyclerViewDecoration(
-            true,
-            SEARCH_SPAN_COUNT,
-            RecyclerViewSpacing(spacing, spacing, spacing, spacing)
-        )
-        rvSearch.addItemDecoration(recyclerViewDecoration)
-        rvSearch.layoutManager = GridLayoutManager(mContext, SEARCH_SPAN_COUNT)
-        rvSearch.adapter = searchGridAdapter
-        rvSearch.setOnScrollChangeListener { _, _, _, _, _ ->
-            if (!rvSearch.canScrollVertically(1)) { //최하단 스크롤
-                requestApi(correntPage)
+        viewBinding.llBack.setOnClickListener(this)
+        viewBinding.etSearchTitle.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
             }
-        }
 
-        etSearchTitle = findViewById(R.id.et_search_title)
-        etSearchTitle.setOnEditorActionListener { _, actionId, _ ->
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewBinding.searchViewModel?.setContents(s.toString())
+            }
+        })
+
+        viewBinding.etSearchTitle.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                llSearch.performClick()
+                viewBinding.llSearch.performClick()
             }
             return@setOnEditorActionListener false
         }
-
     }
 
     override fun onClick(v: View) {
@@ -68,33 +54,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(), View.OnClickListen
             R.id.ll_back -> {
                 finish()
             }
-
-            R.id.ll_search -> {
-                // 검색 api
-                requestApi(1)
-            }
         }
-    }
-
-    fun requestApi(searchPage: Int) {
-//        rxResponseManager.add(
-//            apiRequest.getSearch(
-//                CommonUtil.getSearchParam(etSearchTitle.text.toString()),
-//                searchPage
-//            ), object : IRxResult {
-//
-//                override fun <T> onNext(response: T) {
-//                    val movieMainResponse = response as MovieMainResponse
-//                    val searchList: MutableList<MovieMainResponse.Movie> = movieMainResponse.results
-//                        ?: mutableListOf()
-//                    if (searchPage < movieMainResponse.totalPages) {
-//                        correntPage++
-//                    }
-//                    searchGridAdapter.addList(searchList)
-//                }
-//
-//                override fun onErrer(error: Throwable) {
-//                }
-//            })
     }
 }
