@@ -2,6 +2,7 @@ package com.movie.model.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.movie.common.constants.IMAGE_URL
 
 class PagerViewModel : BaseViewModel() {
 
@@ -13,8 +14,8 @@ class PagerViewModel : BaseViewModel() {
     val title: LiveData<String> get() = _title
     val id: LiveData<Int> get() = _id
 
-    fun setImageUrl(url: String) {
-        _imageUrl.value = url
+    fun setImageUrl(url: String?) {
+        _imageUrl.value = IMAGE_URL + url
     }
 
     fun setTitle(title: String) {

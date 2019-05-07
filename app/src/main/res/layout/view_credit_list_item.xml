@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable name="creaditInfoViewModel"
+                  type="com.movie.model.view.CreaditInfoViewModel"/>
+
+    </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:id="@+id/ll_credit_list_item"
@@ -15,7 +20,9 @@
                 android:layout_width="@dimen/detail_overview_credit_img_size"
                 android:layout_height="@dimen/detail_overview_credit_img_size"
                 android:contentDescription="@null"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                app:creditImgUrl="@{creaditInfoViewModel.url}"
+        />
 
         <TextView
                 android:id="@+id/tv_credit_name"
@@ -25,7 +32,9 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/common_text_white"
-                android:textSize="@dimen/detail_overview_credit_name"/>
+                android:textSize="@dimen/detail_overview_credit_name"
+                android:text="@{creaditInfoViewModel.name}"
+        />
 
         <TextView
                 android:id="@+id/tv_credit_part"
@@ -35,7 +44,8 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/main_back_drop_holder"
-                android:textSize="@dimen/detail_overview_credit_part"/>
+                android:textSize="@dimen/detail_overview_credit_part"
+                android:text="@{creaditInfoViewModel.part}"/>
 
     </LinearLayout>
 

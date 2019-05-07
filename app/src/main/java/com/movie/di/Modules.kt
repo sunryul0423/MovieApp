@@ -42,4 +42,4 @@ val apiModule = module {
     }
 }
 
-val appModule = listOf(apiModule, detailCreditModule, movieDetailCreditModule)
+val appModule = listOf(apiModule, detailCreditCastModule)

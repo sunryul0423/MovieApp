@@ -3,21 +3,21 @@ package com.movie.model.data
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class VideoResponse : Serializable {
+data class VideoResponse(
+    var id: Int,
+    var results: List<Videos>
+) : Serializable {
 
-    var id = 0
-    var results: List<Videos>? = null
-
-    inner class Videos {
-        var site = ""
-        var id = ""
-        var size = 0
+    data class Videos(
+        var site: String,
+        var id: String,
+        var size: Int,
         @SerializedName("iso_639_1")
-        var iso6391 = ""
-        var key = ""
+        var iso6391: String,
+        var key: String,
         @SerializedName("iso_3166_1")
-        var iso31661 = ""
-        var name = ""
-        var type = ""
-    }
+        var iso31661: String,
+        var name: String,
+        var type: String
+    )
 }

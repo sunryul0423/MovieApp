@@ -8,21 +8,21 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import com.movie.R
 import com.movie.common.constants.DETAIL_CREDIT_CAST
-import com.movie.databinding.FragmentDetailSimilarBinding
+import com.movie.databinding.FragmentDetailCreditCastBinding
 import com.movie.model.data.CreditResponse
-import com.movie.model.view.MovieDetailCreditViewModel
-import com.movie.model.view.MovieDetailCreditViewModelFactory
+import com.movie.model.view.DetailCreditCastViewModel
+import com.movie.model.view.DetailCreditCastViewModelFactory
 import org.koin.android.ext.android.inject
 
 
-class MovieDetailCreditCastFragment : BaseFragment<FragmentDetailSimilarBinding>() {
+class MovieDetailCreditCastFragment : BaseFragment<FragmentDetailCreditCastBinding>() {
 
     override val layoutResourceId: Int
-        get() = R.layout.fragment_detail_similar
+        get() = R.layout.fragment_detail_credit_cast
 
     private var castList: List<CreditResponse.Cast> = emptyList()
 
-    private val movieDetailCreditViewModelFactory: MovieDetailCreditViewModelFactory by inject()
+    private val detailCreditCastViewModelFactory: DetailCreditCastViewModelFactory by inject()
 
     companion object {
         fun newInstance(creditResponse: CreditResponse): MovieDetailCreditCastFragment {
@@ -46,27 +46,11 @@ class MovieDetailCreditCastFragment : BaseFragment<FragmentDetailSimilarBinding>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        val movieDetailCreditViewModel = ViewModelProviders.of(this, movieDetailCreditViewModelFactory)
-            .get(MovieDetailCreditViewModel::class.java)
-        movieDetailCreditViewModel.setCastList(castList)
-        viewBinding.movieDetailCreditViewModel = movieDetailCreditViewModel
+        val detailCreditCastViewModel = ViewModelProviders.of(this, detailCreditCastViewModelFactory)
+            .get(DetailCreditCastViewModel::class.java)
+        detailCreditCastViewModel.setCastList(castList)
+        viewBinding.detailCreditCastViewModel = detailCreditCastViewModel
         viewBinding.lifecycleOwner = this
         return view
     }
-
-//    fun setView() {
-//        val creaditInfoList: MutableList<CreaditInfoModel> = mutableListOf()
-//        for (i in castList.indices) {
-//            val creaditInfoModel = CreaditInfoModel(castList[i].profilePath, castList[i].name, castList[i].character)
-//            creaditInfoList.add(creaditInfoModel)
-//        }
-//        val creditListAdapter = CreditListAdapter(mContext, creaditInfoList)
-//        rvSimilar.setHasFixedSize(true)
-//        val spacing: Int = resources.getDimensionPixelSize(R.dimen.detail_overview_credit_divider)
-//        val recyclerViewDecoration =
-//            RecyclerViewDecoration(true, 3, RecyclerViewSpacing(spacing, spacing, spacing, spacing))
-//        rvSimilar.addItemDecoration(recyclerViewDecoration)
-//        rvSimilar.layoutManager = GridLayoutManager(mContext, 3)
-//        rvSimilar.adapter = creditListAdapter
-//    }
 }

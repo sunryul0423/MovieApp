@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable name="detailOverviewViewModel"
+                  type="com.movie.model.view.DetailOverviewViewModel"/>
+    </data>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -36,12 +43,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end|center_vertical"
-                            android:drawableEnd="@drawable/baseline_keyboard_arrow_down_black"
+                            android:drawableEnd="@{safeUnbox(detailOverviewViewModel.isVisibleMore) ? @drawable/baseline_keyboard_arrow_up_black : @drawable/baseline_keyboard_arrow_down_black}"
                             android:drawableTint="@color/main_back_drop_holder"
                             android:gravity="center_vertical"
                             android:text="@string/detail_more"
                             android:textColor="@color/main_back_drop_holder"
-                            android:textSize="@dimen/detail_overview_credit_all"/>
+                            android:textSize="@dimen/detail_overview_credit_all"
+                            android:onClickListener="@{() -> safeUnbox(detailOverviewViewModel.isVisibleMore) ? detailOverviewViewModel.setVisibleMore(false) : detailOverviewViewModel.setVisibleMore(true)}"
+                    />
                 </FrameLayout>
 
                 <TextView
@@ -49,8 +58,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/detail_btn_top_margin"
+                        android:visibility="@{safeUnbox(detailOverviewViewModel.isVisibleMore) ? View.VISIBLE : View.GONE}"
                         android:ellipsize="end"
                         android:maxLines="3"
+                        android:text="@{detailOverviewViewModel.overview}"
                         android:textColor="@color/common_text_white"/>
 
                 <TextView
@@ -66,7 +77,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/detail_btn_top_margin"
-                        android:nestedScrollingEnabled="true"/>
+                        android:nestedScrollingEnabled="true"
+                        app:videoListAdapter="@{detailOverviewViewModel.videoListAdapter}"
+                        app:videoListItem="@{detailOverviewViewModel.videoList}"
+                />
 
 
                 <FrameLayout
@@ -99,7 +113,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/detail_btn_top_margin"
-                        android:nestedScrollingEnabled="true"/>
+                        android:nestedScrollingEnabled="true"
+                        app:creditListAdapter="@{detailOverviewViewModel.creditListAdapter}"
+                        app:creditListItem="@{detailOverviewViewModel.creditResponse}"
+                />
 
                 <TextView
                         android:layout_width="wrap_content"

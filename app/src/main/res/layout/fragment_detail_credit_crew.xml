@@ -3,8 +3,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="detailSimilarViewModel"
-                  type="com.movie.model.view.DetailSimilarViewModel"/>
+        <variable name="detailCreditCastViewModel"
+                  type="com.movie.model.view.DetailCreditCastViewModel"/>
     </data>
 
     <LinearLayout
@@ -14,14 +14,12 @@
             android:paddingBottom="@dimen/detail_margin">
 
         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_similar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:nestedScrollingEnabled="false"
-                app:searchAdapter="@{detailSimilarViewModel.similarGridAdapter}"
-                app:searchItem="@{detailSimilarViewModel.similarList}"
-                app:searchAdd="@{safeUnbox(detailSimilarViewModel.isAdd)}"
+                app:detailCreditAdapter="@{detailCreditCastViewModel.creditCastAdapter}"
+                app:detailCreditCrewItem="@{detailCreditCastViewModel.crewList}"
         />
 
     </LinearLayout>

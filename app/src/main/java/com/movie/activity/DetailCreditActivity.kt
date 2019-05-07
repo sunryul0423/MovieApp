@@ -16,14 +16,13 @@ import com.movie.fragment.MovieDetailCreditCrewFragment
 import com.movie.model.data.CreditResponse
 import com.movie.model.view.DetailCreditModel
 import com.movie.model.view.DetailCreditModelFactory
-import org.koin.android.ext.android.inject
 
 class DetailCreditActivity : BaseActivity<ActivityDetailCreditBinding>() {
 
     override val layoutResourceId: Int
         get() = R.layout.activity_detail_credit
 
-    private val detailCreditModelFactory: DetailCreditModelFactory by inject()
+    private lateinit var detailCreditModelFactory: DetailCreditModelFactory
 
     private lateinit var creditResponse: CreditResponse
 
@@ -31,15 +30,20 @@ class DetailCreditActivity : BaseActivity<ActivityDetailCreditBinding>() {
         super.onCreate(savedInstanceState)
         initActionBar(true, intent.getStringExtra(MOVIE_NAME))
 
+        creditResponse = intent.getSerializableExtra(DETAIL_CREDIT) as CreditResponse
+        detailCreditModelFactory = DetailCreditModelFactory(creditResponse)
+
         val detailCreditModel = ViewModelProviders.of(this, detailCreditModelFactory).get(DetailCreditModel::class.java)
         viewBinding.run {
             this.detailCreditModel = detailCreditModel
             this.lifecycleOwner = this@DetailCreditActivity
         }
 
-        creditResponse = intent.getSerializableExtra(DETAIL_CREDIT) as CreditResponse
         detailCreditModel.creditResponse.observe(this, Observer {
-
+            viewBinding.rgDetailCreditBtn.check(R.id.rb_detail_cast)
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fl_contents, MovieDetailCreditCastFragment.newInstance(creditResponse))
+                .commitAllowingStateLoss()
         })
 
         setView()
@@ -60,7 +64,6 @@ class DetailCreditActivity : BaseActivity<ActivityDetailCreditBinding>() {
             when (checkedId) {
                 R.id.rb_detail_cast -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fl_contents, MovieDetailCreditCastFragment.newInstance(creditResponse))
                         .commitAllowingStateLoss()
                 }
 
@@ -71,9 +74,5 @@ class DetailCreditActivity : BaseActivity<ActivityDetailCreditBinding>() {
                 }
             }
         }
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fl_contents, MovieDetailCreditCastFragment.newInstance(creditResponse))
-            .commitAllowingStateLoss()
     }
-
 }

@@ -54,6 +54,9 @@ class DetailMovieActivity : BaseActivity<ActivityDetailMovieBinding>(), IScrollC
                 ).commitAllowingStateLoss()
                 setView(it)
             })
+        detailMovieViewModel.title.observe(this, Observer {
+            initActionBar(true, it)
+        })
     }
 
     private fun setView(movieDetailResponse: MovieDetailResponse) {

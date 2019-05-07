@@ -40,7 +40,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         )
 
         // 바인딩 뷰-모델 연결
-        mainViewModelFactory = MainViewModelFactory(apiRequest)
+        mainViewModelFactory = MainViewModelFactory(apiRequest, progress)
         val mainViewModel = ViewModelProviders.of(this, mainViewModelFactory).get(MainViewModel::class.java)
         mainViewModel.setIndicator(viewBinding.cvIndicator)
         viewBinding.mainViewModel = mainViewModel

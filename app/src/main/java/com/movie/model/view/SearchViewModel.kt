@@ -14,12 +14,12 @@ import io.reactivex.schedulers.Schedulers
 class SearchViewModel(private val apiRequest: ApiRequest, private val progress: ProgressDialog) : BaseViewModel() {
 
     private val _contents = MutableLiveData<String>()
-    private val _searchList = MutableLiveData<MutableList<MovieMainResponse.Movie>>()
+    private val _searchList = MutableLiveData<List<MovieMainResponse.Movie>>()
     private val _isAdd = MutableLiveData<Boolean>()
 
 
     val contents: LiveData<String> get() = _contents
-    val searchList: LiveData<MutableList<MovieMainResponse.Movie>> get() = _searchList
+    val searchList: LiveData<List<MovieMainResponse.Movie>> get() = _searchList
     val isAdd: LiveData<Boolean> get() = _isAdd
 
 

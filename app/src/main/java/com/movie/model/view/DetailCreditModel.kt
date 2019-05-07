@@ -4,16 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.movie.model.data.CreditResponse
 
-class DetailCreditModel : BaseViewModel() {
+class DetailCreditModel(private val __creditResponse: CreditResponse) : BaseViewModel() {
 
-    private val _creditRespons = MutableLiveData<CreditResponse>()
-
-    val creditResponse: LiveData<CreditResponse> = _creditRespons
-
-    val nameLiveData = MutableLiveData<String>()
-
-    fun changeName(name: String) {
-        nameLiveData.postValue(name)
-    }
-
+    private val _creditRespons = MutableLiveData<CreditResponse>().apply { value = __creditResponse }
+    val creditResponse: LiveData<CreditResponse> get() = _creditRespons
 }

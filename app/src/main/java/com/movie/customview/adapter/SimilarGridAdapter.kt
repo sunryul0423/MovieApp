@@ -96,7 +96,7 @@ class SimilarGridAdapter : RecyclerView.Adapter<SimilarGridHolder>() {
         return similarList.size
     }
 
-    fun addList(addList: MutableList<MovieMainResponse.Movie>, isAdd: Boolean) {
+    fun addList(addList: List<MovieMainResponse.Movie>, isAdd: Boolean) {
         if (!isAdd) {
             similarList.clear()
         }

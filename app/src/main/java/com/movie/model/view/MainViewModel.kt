@@ -3,7 +3,6 @@ package com.movie.model.view
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.crashlytics.android.Crashlytics
-import com.movie.common.constants.IMAGE_URL
 import com.movie.common.constants.NOW_PALY_PAGER_COUNT
 import com.movie.common.constants.PAGER_COUNT
 import com.movie.common.constants.POPULAR_COUNT
@@ -11,13 +10,15 @@ import com.movie.common.utils.CommonUtil
 import com.movie.customview.adapter.CustomListAdapter
 import com.movie.customview.adapter.UpcomingPagerAdapter
 import com.movie.customview.view.CustomIndicator
+import com.movie.dialog.ProgressDialog
 import com.movie.model.data.MovieMainResponse
 import com.movie.model.request.ApiRequest
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class MainViewModel(
-    private val apiRequest: ApiRequest
+    private val apiRequest: ApiRequest,
+    private val progress: ProgressDialog
 ) : BaseViewModel() {
 
     private val _upcomingPagerAdapter = MutableLiveData<UpcomingPagerAdapter>().apply { value = UpcomingPagerAdapter() }
@@ -51,14 +52,13 @@ class MainViewModel(
     }
 
     fun requestApi() {
-//        var progress: ProgressDialog = ProgressDialog(mContext) // 프로그래스 처리..
-
+        progress.show()
         addDisposable(
             apiRequest.getUpcoming(CommonUtil.getParam())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    val upcomingMovieList: MutableList<MovieMainResponse.Movie> = if (PAGER_COUNT < it.results.size) {
+                    val upcomingMovieList: List<MovieMainResponse.Movie> = if (PAGER_COUNT < it.results.size) {
                         it.results.subList(0, PAGER_COUNT)
                     } else {
                         it.results
@@ -68,13 +68,15 @@ class MainViewModel(
                     for (position in upcomingMovieList.indices) {
                         val pagerViewModel = PagerViewModel().apply {
                             setTitle(upcomingMovieList[position].title)
-                            setImageUrl(IMAGE_URL + upcomingMovieList[position].backdropPath)
+                            setImageUrl(upcomingMovieList[position].backdropPath)
                             setId(upcomingMovieList[position].id)
                         }
                         list.add(pagerViewModel)
                         _pagerViewModelList.value = list
                     }
+                    progressCancel()
                 }, {
+                    progressCancel()
                     Crashlytics.logException(it)
                 })
         )
@@ -89,7 +91,9 @@ class MainViewModel(
                     } else {
                         _nowScreenList.value = it.results
                     }
+                    progressCancel()
                 }, {
+                    progressCancel()
                     Crashlytics.logException(it)
                 })
         )
@@ -104,7 +108,9 @@ class MainViewModel(
                     } else {
                         _popularList.value = it.results
                     }
+                    progressCancel()
                 }, {
+                    progressCancel()
                     Crashlytics.logException(it)
                 })
         )
@@ -118,10 +124,19 @@ class MainViewModel(
                     } else {
                         _topRatedList.value = it.results
                     }
+                    progressCancel()
                 }, {
+                    progressCancel()
                     Crashlytics.logException(it)
                 })
         )
         _isRefresh.value = false
+    }
+
+    override fun progressCancel() {
+        super.progressCancel()
+        if (count == 0 && progress.isShowing) {
+            progress.cancel()
+        }
     }
 }
