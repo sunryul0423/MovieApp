@@ -21,7 +21,6 @@ class MainViewModel(
     private val progress: ProgressDialog
 ) : BaseViewModel() {
 
-    private val _upcomingPagerAdapter = MutableLiveData<UpcomingPagerAdapter>().apply { value = UpcomingPagerAdapter() }
 
     private val _cvIndicator = MutableLiveData<CustomIndicator>()
     private val _isRefresh = MutableLiveData<Boolean>()
@@ -33,8 +32,7 @@ class MainViewModel(
     val nowScreenAdapter = CustomListAdapter()
     val popularAdapter = CustomListAdapter()
     val topRatedAdapter = CustomListAdapter()
-
-    val upcomingPagerAdapter: LiveData<UpcomingPagerAdapter> get() = _upcomingPagerAdapter
+    val upcomingPagerAdapter = UpcomingPagerAdapter()
     val cvIndicator: LiveData<CustomIndicator> get() = _cvIndicator
     val isRefresh: LiveData<Boolean> get() = _isRefresh
 
@@ -64,7 +62,7 @@ class MainViewModel(
                         it.results
                     }
 
-                    val list: MutableList<PagerViewModel> = arrayListOf()
+                    val list: MutableList<PagerViewModel> = mutableListOf()
                     for (position in upcomingMovieList.indices) {
                         val pagerViewModel = PagerViewModel().apply {
                             setTitle(upcomingMovieList[position].title)

@@ -149,7 +149,6 @@ fun setSearchItem(view: RecyclerView, searchList: List<MovieMainResponse.Movie>?
     searchList?.let {
         val adapter = view.adapter as SimilarGridAdapter
         adapter.addList(it, isAdd)
-        adapter.notifyDataSetChanged()
     }
 }
 
