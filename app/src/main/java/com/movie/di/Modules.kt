@@ -1,11 +1,12 @@
 package com.movie.di
 
-import com.movie.common.constants.BASE_URL
-import com.movie.model.request.ApiRequest
+import com.movie.common.BASE_URL
+import com.movie.interfaces.ApiRequest
+import com.movie.model.view.*
 import okhttp3.CookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.dsl.module.module
+import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -42,4 +43,28 @@ val apiModule = module {
     }
 }
 
-val appModule = listOf(apiModule, detailCreditCastModule)
+val viewModelFactoryModule = module {
+    factory {
+        MainViewModelFactory(get())
+    }
+    factory {
+        DetailMovieViewModelFactory(get())
+    }
+    factory {
+        DetailOverviewViewModelFactory(get())
+    }
+    factory {
+        DetailSimilarViewModelFactory(get())
+    }
+    factory {
+        SearchViewModelFactory(get())
+    }
+    factory {
+        DetailCreditModelFactory()
+    }
+    factory {
+        DetailCreditCastViewModelFactory()
+    }
+}
+
+val appModule = listOf(apiModule, viewModelFactoryModule)

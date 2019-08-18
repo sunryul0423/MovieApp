@@ -5,7 +5,11 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.movie.model.data.RecyclerViewSpacing
 
-class RecyclerViewDecoration(private val isGrid: Boolean, var spanCount: Int, var spacing: RecyclerViewSpacing) : RecyclerView.ItemDecoration() {
+class RecyclerViewDecoration(
+    private val isGrid: Boolean,
+    private var spanCount: Int,
+    private var spacing: RecyclerViewSpacing
+) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)

@@ -13,8 +13,8 @@ class CustomIndicator : LinearLayout {
 
     private val mContext: Context
 
-    private var mAnimDuration: Int = 300
-    private var mItemMargin: Int = 10
+    private var animDuration: Int = 300
+    private var itemMargin: Int = 10
     private var mDefaultCircle: Int = 0
     private var mSelectCircle: Int = 0
     private lateinit var imageDot: Array<ImageView?>
@@ -27,27 +27,34 @@ class CustomIndicator : LinearLayout {
         mContext = context
     }
 
-    fun createDotPanel(itemMargin: Int, animDuration: Int, count: Int, defaultCircle: Int, selectCircle: Int) {
-        mItemMargin = itemMargin
-        mAnimDuration = animDuration
+    fun setAnimDuration(animDuration: Int) {
+        this.animDuration = animDuration
+    }
+
+    fun setItemMargin(itemMargin: Int) {
+        this.itemMargin = itemMargin
+    }
+
+    fun createDotPanel(count: Int, defaultCircle: Int, selectCircle: Int) {
+        removeAllViews()
         mDefaultCircle = defaultCircle
         mSelectCircle = selectCircle
-
         imageDot = arrayOfNulls(count)
 
-//        removeAllViews()
         for (i in 0 until count) {
             imageDot[i] = ImageView(mContext)
-            val params = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-            params.topMargin = itemMargin
-            params.bottomMargin = itemMargin
-            params.leftMargin = itemMargin
-            params.rightMargin = itemMargin
-            params.gravity = Gravity.CENTER
-
-            imageDot[i]?.layoutParams = params
-            imageDot[i]?.setImageResource(defaultCircle)
-            imageDot[i]?.id?.let { imageDot[i]?.setTag(it, false) }
+            imageDot[i]?.let { imageView ->
+                val params = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+                    this.topMargin = itemMargin * 2
+                    this.bottomMargin = itemMargin * 2
+                    this.leftMargin = itemMargin
+                    this.rightMargin = itemMargin
+                    this.gravity = Gravity.CENTER
+                }
+                imageView.layoutParams = params
+                imageView.setImageResource(defaultCircle)
+                imageView.setTag(imageView.id, false)
+            }
             addView(imageDot[i])
         }
 
@@ -82,7 +89,7 @@ class CustomIndicator : LinearLayout {
             0.5f
         )
         anim.fillAfter = true
-        anim.duration = mAnimDuration.toLong()
+        anim.duration = animDuration.toLong()
         view.startAnimation(anim)
         view.setTag(view.id, true)
     }
@@ -99,7 +106,7 @@ class CustomIndicator : LinearLayout {
             0.5f
         )
         anim.fillAfter = true
-        anim.duration = mAnimDuration.toLong()
+        anim.duration = animDuration.toLong()
         view.startAnimation(anim)
         view.setTag(view.id, false)
     }

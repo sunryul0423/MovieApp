@@ -2,51 +2,51 @@ package com.movie.model.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.crashlytics.android.Crashlytics
-import com.movie.common.utils.CommonUtil
+import com.movie.common.getSearchParam
 import com.movie.customview.adapter.SimilarGridAdapter
-import com.movie.dialog.ProgressDialog
+import com.movie.interfaces.ApiRequest
 import com.movie.model.data.MovieMainResponse
-import com.movie.model.request.ApiRequest
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class SearchViewModel(private val apiRequest: ApiRequest, private val progress: ProgressDialog) : BaseViewModel() {
+class SearchViewModel(private val apiRequest: ApiRequest) : BaseViewModel() {
 
-    private val _contents = MutableLiveData<String>()
-    private val _searchList = MutableLiveData<List<MovieMainResponse.Movie>>()
-    private val _isAdd = MutableLiveData<Boolean>()
-
-
-    val contents: LiveData<String> get() = _contents
-    val searchList: LiveData<List<MovieMainResponse.Movie>> get() = _searchList
-    val isAdd: LiveData<Boolean> get() = _isAdd
+    private val contents = MutableLiveData<String>()
+    private val searchList = MutableLiveData<List<MovieMainResponse.Movie>>()
+    private val isAdd = MutableLiveData<Boolean>()
 
 
     var correntPage: Int = 1
     val searchGridAdapter = SimilarGridAdapter()
 
     fun reqeustApi(searchPage: Int, add: Boolean) {
-        progress.show()
+        progress.value = true
         addDisposable(
-            apiRequest.getSearch(CommonUtil.getSearchParam(_contents.value ?: ""), searchPage)
+            apiRequest.getSearch(getSearchParam(contents.value ?: ""), searchPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     if (searchPage < it.totalPages) {
                         correntPage++
                     }
-                    _searchList.value = it.results
-                    _isAdd.value = add
-                    progress.cancel()
+                    searchList.value = it.results
+                    isAdd.value = add
+                    progress.value = false
                 }, {
-                    progress.cancel()
-                    Crashlytics.logException(it)
+                    onError(it)
                 })
         )
     }
 
     fun setContents(contents: String) {
-        _contents.value = contents
+        this.contents.value = contents
+    }
+
+    fun getSearchList(): LiveData<List<MovieMainResponse.Movie>> {
+        return searchList
+    }
+
+    fun isAdd(): LiveData<Boolean> {
+        return isAdd
     }
 }

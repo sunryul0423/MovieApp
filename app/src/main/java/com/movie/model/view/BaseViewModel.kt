@@ -1,18 +1,18 @@
 package com.movie.model.view
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.movie.dialog.ProgressDialog
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
 abstract class BaseViewModel : ViewModel() {
 
-    protected var count = 0
-
     private val compositeDisposable = CompositeDisposable()
+    protected val throwableData = MutableLiveData<Throwable>()
+    protected val progress = MutableLiveData<Boolean>()
 
     fun addDisposable(disposable: Disposable) {
-        ++count
         compositeDisposable.add(disposable)
     }
 
@@ -21,7 +21,19 @@ abstract class BaseViewModel : ViewModel() {
         super.onCleared()
     }
 
-    open fun progressCancel() {
-        --count
+    fun getThrowableData(): LiveData<Throwable> {
+        return throwableData
+    }
+
+    fun getProgress(): LiveData<Boolean> {
+        return progress
+    }
+
+    fun onError(throwable: Throwable) {
+        if (progress.value!!) {
+            progress.value = false
+        }
+        throwableData.value = throwable
+//        Crashlytics.logException(throwable)
     }
 }

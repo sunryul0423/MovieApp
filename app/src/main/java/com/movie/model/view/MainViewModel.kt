@@ -2,57 +2,46 @@ package com.movie.model.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.crashlytics.android.Crashlytics
-import com.movie.common.constants.NOW_PALY_PAGER_COUNT
-import com.movie.common.constants.PAGER_COUNT
-import com.movie.common.constants.POPULAR_COUNT
-import com.movie.common.utils.CommonUtil
+import com.movie.R
+import com.movie.common.NOW_PALY_PAGER_COUNT
+import com.movie.common.PAGER_COUNT
+import com.movie.common.POPULAR_COUNT
 import com.movie.customview.adapter.CustomListAdapter
 import com.movie.customview.adapter.UpcomingPagerAdapter
 import com.movie.customview.view.CustomIndicator
-import com.movie.dialog.ProgressDialog
+import com.movie.interfaces.ApiRequest
 import com.movie.model.data.MovieMainResponse
-import com.movie.model.request.ApiRequest
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class MainViewModel(
-    private val apiRequest: ApiRequest,
-    private val progress: ProgressDialog
-) : BaseViewModel() {
+class MainViewModel(private val apiRequest: ApiRequest) : BaseViewModel() {
 
-
-    private val _cvIndicator = MutableLiveData<CustomIndicator>()
-    private val _isRefresh = MutableLiveData<Boolean>()
-    private val _pagerViewModelList = MutableLiveData<MutableList<PagerViewModel>>()
-    private val _nowScreenList = MutableLiveData<List<MovieMainResponse.Movie>>()
-    private val _popularList = MutableLiveData<List<MovieMainResponse.Movie>>()
-    private val _topRatedList = MutableLiveData<List<MovieMainResponse.Movie>>()
+    private val cvIndicator = MutableLiveData<CustomIndicator>()
+    private val isRefresh = MutableLiveData<Boolean>()
+    private val pagerViewModelList = MutableLiveData<MutableList<PagerViewModel>>()
+    private val nowScreenList = MutableLiveData<List<MovieMainResponse.Movie>>()
+    private val popularList = MutableLiveData<List<MovieMainResponse.Movie>>()
+    private val topRatedList = MutableLiveData<List<MovieMainResponse.Movie>>()
+    private val upcomingPagerAdapter = MutableLiveData<UpcomingPagerAdapter>()
 
     val nowScreenAdapter = CustomListAdapter()
     val popularAdapter = CustomListAdapter()
     val topRatedAdapter = CustomListAdapter()
-    val upcomingPagerAdapter = UpcomingPagerAdapter()
-    val cvIndicator: LiveData<CustomIndicator> get() = _cvIndicator
-    val isRefresh: LiveData<Boolean> get() = _isRefresh
-
-    val pagerViewModelList: LiveData<MutableList<PagerViewModel>> get() = _pagerViewModelList
-    val nowScreenList: LiveData<List<MovieMainResponse.Movie>> get() = _nowScreenList
-    val popularList: LiveData<List<MovieMainResponse.Movie>> get() = _popularList
-    val topRatedList: LiveData<List<MovieMainResponse.Movie>> get() = _topRatedList
 
     init {
         requestApi()
     }
 
-    fun setIndicator(cvIndicator: CustomIndicator) {
-        _cvIndicator.value = cvIndicator
-    }
-
     fun requestApi() {
-        progress.show()
+        upcomingPagerAdapter.value = UpcomingPagerAdapter()
+        cvIndicator.value?.createDotPanel(
+            PAGER_COUNT,
+            R.drawable.indicator_dot_off,
+            R.drawable.indicator_dot_on
+        )
+        progress.value = true
         addDisposable(
-            apiRequest.getUpcoming(CommonUtil.getParam())
+            apiRequest.getUpcoming()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -70,71 +59,92 @@ class MainViewModel(
                             setId(upcomingMovieList[position].id)
                         }
                         list.add(pagerViewModel)
-                        _pagerViewModelList.value = list
+                        pagerViewModelList.value = list
                     }
-                    progressCancel()
+                    progress.value = false
                 }, {
-                    progressCancel()
-                    Crashlytics.logException(it)
+                    onError(it)
                 })
         )
 
         addDisposable(
-            apiRequest.getNowPlaying(CommonUtil.getParam())
+            apiRequest.getNowPlaying()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     if (NOW_PALY_PAGER_COUNT < it.results.size) {
-                        _nowScreenList.value = it.results.subList(0, NOW_PALY_PAGER_COUNT)
+                        nowScreenList.value = it.results.subList(0, NOW_PALY_PAGER_COUNT)
                     } else {
-                        _nowScreenList.value = it.results
+                        nowScreenList.value = it.results
                     }
-                    progressCancel()
+                    progress.value = false
                 }, {
-                    progressCancel()
-                    Crashlytics.logException(it)
+                    onError(it)
                 })
         )
 
         addDisposable(
-            apiRequest.getPopular(CommonUtil.getParam())
+            apiRequest.getPopular()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     if (POPULAR_COUNT < it.results.size) {
-                        _popularList.value = it.results.subList(0, POPULAR_COUNT)
+                        popularList.value = it.results.subList(0, POPULAR_COUNT)
                     } else {
-                        _popularList.value = it.results
+                        popularList.value = it.results
                     }
-                    progressCancel()
+                    progress.value = false
                 }, {
-                    progressCancel()
-                    Crashlytics.logException(it)
+                    onError(it)
                 })
         )
         addDisposable(
-            apiRequest.getTopRated(CommonUtil.getParam())
+            apiRequest.getTopRated()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     if (POPULAR_COUNT < it.results.size) {
-                        _topRatedList.value = it.results.subList(0, POPULAR_COUNT)
+                        topRatedList.value = it.results.subList(0, POPULAR_COUNT)
                     } else {
-                        _topRatedList.value = it.results
+                        topRatedList.value = it.results
                     }
-                    progressCancel()
+                    progress.value = false
                 }, {
-                    progressCancel()
-                    Crashlytics.logException(it)
+                    onError(it)
                 })
         )
-        _isRefresh.value = false
+        isRefresh.value = false
     }
 
-    override fun progressCancel() {
-        super.progressCancel()
-        if (count == 0 && progress.isShowing) {
-            progress.cancel()
-        }
+    fun setIndicator(cvIndicator: CustomIndicator) {
+        this.cvIndicator.value = cvIndicator
+    }
+
+    fun getUpcomingPagerAdapter(): LiveData<UpcomingPagerAdapter> {
+        return upcomingPagerAdapter
+    }
+
+    fun getCvIndicator(): LiveData<CustomIndicator> {
+        return cvIndicator
+    }
+
+    fun isRefresh(): LiveData<Boolean> {
+        return isRefresh
+    }
+
+    fun getPagerViewModelList(): LiveData<MutableList<PagerViewModel>> {
+        return pagerViewModelList
+    }
+
+    fun getNowScreenList(): LiveData<List<MovieMainResponse.Movie>> {
+        return nowScreenList
+    }
+
+    fun getPopularList(): LiveData<List<MovieMainResponse.Movie>> {
+        return popularList
+    }
+
+    fun getTopRatedList(): LiveData<List<MovieMainResponse.Movie>> {
+        return topRatedList
     }
 }

@@ -1,59 +1,48 @@
 package com.movie.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.movie.R
-import com.movie.interfaces.IActionBarClick
-import com.movie.customview.view.CoustomActionBar
+import com.movie.customview.view.CustomActionBar
 import com.movie.dialog.ProgressDialog
-import com.movie.model.request.ApiRequest
-import org.koin.android.ext.android.inject
+import com.movie.interfaces.IActionBarClick
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
-    protected lateinit var coustomActionBar: CoustomActionBar
-
-    protected lateinit var mContext: Context
-
+    protected lateinit var customActionBar: CustomActionBar
     protected lateinit var viewBinding: T
-
     protected abstract val layoutResourceId: Int
-
-    protected val apiRequest: ApiRequest by inject()
-
     protected lateinit var progress: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mContext = this
         progress = ProgressDialog(this)
         viewBinding = DataBindingUtil.setContentView(this, layoutResourceId)
     }
 
     internal fun initActionBar(isBackIcon: Boolean, title: String) {
-        coustomActionBar = findViewById(R.id.cv_actionbar)
-        coustomActionBar.setChangeIcon(isBackIcon)
-        coustomActionBar.setTitle(title)
-        coustomActionBar.setActionBarLeftClick(object : IActionBarClick() {
+        customActionBar = findViewById(R.id.cv_actionbar)
+        customActionBar.setChangeIcon(isBackIcon)
+        customActionBar.setTitle(title)
+        customActionBar.setActionBarLeftClick(object : IActionBarClick() {
             override fun onLeftClick() {
                 setResult(RESULT_CANCELED)
                 finish()
             }
         })
-        coustomActionBar.setActionBarRightClick(object : IActionBarClick() {
+        customActionBar.setActionBarRightClick(object : IActionBarClick() {
             override fun onRightClick() {
                 //searchAPI
-                val intent = Intent(mContext, SearchActivity::class.java)
+                val intent = Intent(this@BaseActivity, SearchActivity::class.java)
                 startActivity(intent)
             }
         })
     }
 
     internal fun setActionBarTitle(title: String) {
-        coustomActionBar.setTitle(title)
+        customActionBar.setTitle(title)
     }
 }

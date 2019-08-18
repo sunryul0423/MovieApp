@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import com.movie.R
 import com.movie.interfaces.IActionBarClick
 
-class CoustomActionBar : LinearLayout, View.OnClickListener {
+class CustomActionBar : LinearLayout, View.OnClickListener {
 
     private val mContext: Context
 

@@ -1,4 +1,4 @@
-package com.movie.common.constants
+package com.movie.common
 
 const val PAGER_COUNT: Int = 7
 const val NOW_PALY_PAGER_COUNT: Int = 10

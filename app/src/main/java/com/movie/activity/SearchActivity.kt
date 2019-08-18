@@ -1,59 +1,80 @@
 package com.movie.activity
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
 import android.view.inputmethod.EditorInfo
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding2.widget.RxTextView
 import com.movie.R
+import com.movie.common.showThrowableToast
 import com.movie.databinding.ActivitySearchBinding
 import com.movie.model.view.SearchViewModel
 import com.movie.model.view.SearchViewModelFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.activity_search.*
+import org.koin.android.ext.android.inject
+import java.util.concurrent.TimeUnit
 
-class SearchActivity : BaseActivity<ActivitySearchBinding>(), View.OnClickListener {
+class SearchActivity : BaseActivity<ActivitySearchBinding>() {
     override val layoutResourceId: Int
         get() = R.layout.activity_search
 
-    private lateinit var searchViewModelFactory: SearchViewModelFactory
+    private val searchViewModelFactory: SearchViewModelFactory by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        searchViewModelFactory = SearchViewModelFactory(apiRequest, progress)
-        val searchViewModel = ViewModelProviders.of(this, searchViewModelFactory).get(SearchViewModel::class.java)
+        val searchViewModel = ViewModelProvider(this, searchViewModelFactory).get(SearchViewModel::class.java)
         viewBinding.searchViewModel = searchViewModel
         viewBinding.lifecycleOwner = this
-        setView()
+
+        liveDataObserver(searchViewModel)
+        rxEvent(searchViewModel)
     }
 
-    fun setView() {
-        viewBinding.llBack.setOnClickListener(this)
-        viewBinding.etSearchTitle.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
+    private fun rxEvent(searchViewModel: SearchViewModel) {
+        searchViewModel.addDisposable(
+            RxView.clicks(ll_back)
+                .throttleFirst(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                .subscribe { finish() }
+        )
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+        searchViewModel.addDisposable(
+            RxTextView.textChanges(et_search_title)
+                .filter { text -> text.isNotEmpty() }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { text -> searchViewModel.setContents(text.toString()) }
+        )
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewBinding.searchViewModel?.setContents(s.toString())
-            }
+        searchViewModel.addDisposable(
+            RxTextView.editorActionEvents(et_search_title)
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter { it.view().text.isNotEmpty() }
+                .subscribe {
+                    if (it.actionId() == EditorInfo.IME_ACTION_SEARCH) {
+                        viewBinding.llSearch.performClick()
+                    }
+                }
+        )
+
+        searchViewModel.addDisposable(
+            RxView.clicks(ll_search)
+                .filter { et_search_title.text.toString().isNotEmpty() }
+                .throttleFirst(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                .subscribe { searchViewModel.reqeustApi(1, false) }
+        )
+    }
+
+    private fun liveDataObserver(searchViewModel: SearchViewModel) {
+        searchViewModel.getProgress().observe(this, Observer {
+            if (it)
+                progress.show()
+            else
+                progress.cancel()
         })
-
-        viewBinding.etSearchTitle.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                viewBinding.llSearch.performClick()
-            }
-            return@setOnEditorActionListener false
-        }
-    }
-
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.ll_back -> {
-                finish()
-            }
-        }
+        searchViewModel.getThrowableData().observe(this, Observer {
+            showThrowableToast(this@SearchActivity, it)
+        })
     }
 }

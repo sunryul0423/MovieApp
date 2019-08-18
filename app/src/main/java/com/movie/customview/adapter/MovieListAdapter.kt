@@ -5,19 +5,15 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.movie.R
 import com.movie.activity.DetailMovieActivity
-import com.movie.common.constants.IMAGE_URL
-import com.movie.common.constants.MOVIE_ID
+import com.movie.common.IMAGE_URL
+import com.movie.common.MOVIE_ID
 import com.movie.databinding.ViewMovieListItemBinding
-import com.movie.databinding.ViewPagerLayoutBinding
 import com.movie.model.data.MovieMainResponse
 
 class MovieListHolder(private val binding: ViewMovieListItemBinding) : RecyclerView.ViewHolder(binding.root) {

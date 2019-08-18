@@ -6,7 +6,7 @@ import android.view.MotionEvent
 import androidx.core.widget.NestedScrollView
 import com.movie.interfaces.OnScrollListener
 
-class CoustomScrollView : NestedScrollView {
+class CustomScrollView : NestedScrollView {
 
     private val mContext: Context
 
@@ -22,12 +22,15 @@ class CoustomScrollView : NestedScrollView {
         mContext = context
     }
 
-    constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) : super(context, attributeSet, defStyleAttr) {
+    constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) : super(
+        context,
+        attributeSet,
+        defStyleAttr
+    ) {
         mContext = context
     }
 
     override fun onScrollChanged(x: Int, y: Int, oldX: Int, oldY: Int) {
-//        val direction = if (oldY > y) 1 else 0
         mOnScrollListener?.onScroll(y)
     }
 

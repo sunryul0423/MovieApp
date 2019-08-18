@@ -2,12 +2,11 @@ package com.movie.model.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.movie.dialog.ProgressDialog
-import com.movie.model.request.ApiRequest
+import com.movie.interfaces.ApiRequest
 
-class SearchViewModelFactory(private val apiRequest: ApiRequest, private val progress: ProgressDialog) :
-    ViewModelProvider.Factory {
+@Suppress("UNCHECKED_CAST")
+class SearchViewModelFactory(private val apiRequest: ApiRequest) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return SearchViewModel(apiRequest, progress) as T
+        return SearchViewModel(apiRequest) as T
     }
 }

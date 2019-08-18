@@ -19,8 +19,7 @@
                 android:layout_gravity="center_horizontal"
                 android:nestedScrollingEnabled="false"
                 app:detailCreditAdapter="@{detailCreditCastViewModel.creditCastAdapter}"
-                app:detailCreditCastItem="@{detailCreditCastViewModel.castList}"
-        />
+                app:detailCreditCastItem="@{detailCreditCastViewModel.castList}"/>
 
     </LinearLayout>
 </layout>

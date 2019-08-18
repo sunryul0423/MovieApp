@@ -2,15 +2,11 @@ package com.movie.model.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.movie.dialog.ProgressDialog
-import com.movie.model.request.ApiRequest
+import com.movie.interfaces.ApiRequest
 
-class DetailSimilarViewModelFactory(
-    private val apiRequest: ApiRequest,
-    private val progress: ProgressDialog,
-    private val movieId: Int
-) : ViewModelProvider.Factory {
+@Suppress("UNCHECKED_CAST")
+class DetailSimilarViewModelFactory(private val apiRequest: ApiRequest) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return DetailSimilarViewModel(apiRequest, progress, movieId) as T
+        return DetailSimilarViewModel(apiRequest) as T
     }
 }

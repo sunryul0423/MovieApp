@@ -4,74 +4,74 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class MovieDetailResponse(
-    var adult: Boolean,
+    val adult: Boolean,
     @SerializedName("backdrop_path")
-    var backdropPath: String,
+    val backdropPath: String,
     @SerializedName("belongs_to_collection")
-    var belongsToCollection: BelongsToCollection,
-    var budget: Int,
-    var genres: List<Genres>,
+    val belongsToCollection: BelongsToCollection,
+    val budget: Int,
+    val genres: List<Genres>,
 
-    var homepage: String,
-    var id: Int,
+    val homepage: String,
+    val id: Int,
     @SerializedName("imdb_id")
-    var imdbId: String,
+    val imdbId: String,
     @SerializedName("original_language")
-    var originalLanguage: String,
+    val originalLanguage: String,
     @SerializedName("original_title")
-    var originalTitle: String,
-    var overview: String,
+    val originalTitle: String,
+    val overview: String,
     @SerializedName("popularity")
-    var popularity: Double,
+    val popularity: Double,
     @SerializedName("poster_path")
-    var posterPath: String,
+    val posterPath: String,
     @SerializedName("production_companies")
-    var productionCompanies: List<ProductionCompanies>,
+    val productionCompanies: List<ProductionCompanies>,
     @SerializedName("production_countries")
-    var productionCountries: List<ProductionCountries>,
+    val productionCountries: List<ProductionCountries>,
     @SerializedName("release_date")
-    var releaseDate: String,
-    var revenue: Int,
+    val releaseDate: String,
+    val revenue: Int,
     @SerializedName("runtime")
-    var runTime: Int,
+    val runTime: Int,
     @SerializedName("spoken_languages")
-    var spokenLanguages: List<SpokenLanguages>,
-    var status: String,
+    val spokenLanguages: List<SpokenLanguages>,
+    val status: String,
     @SerializedName("tagline")
-    var tagLine: String,
-    var title: String,
-    var video: Boolean,
+    val tagLine: String,
+    val title: String,
+    val video: Boolean,
     @SerializedName("vote_average")
-    var voteAverage: Double,
+    val voteAverage: Double,
     @SerializedName("vote_count")
-    var voteCount: Int
+    val voteCount: Int
 ) : Serializable {
 
     inner class BelongsToCollection : Serializable
 
-    inner class Genres : Serializable {
-        var id: Int = 0
-        var name: String = ""
-    }
+    data class Genres(
+        val id: Int,
+        val name: String
+    ) : Serializable
 
-    inner class ProductionCompanies : Serializable {
-        var id: Int = 0
+    data class ProductionCompanies(
+        val id: Int = 0,
         @SerializedName("logo_path")
-        var logoPath: String = ""
-        var name: String = ""
+        val logoPath: String,
+        val name: String,
         @SerializedName("origin_country")
-        var originCountry: String = ""
-    }
+        val originCountry: String
+    ) : Serializable
 
-    inner class ProductionCountries : Serializable {
+    data class ProductionCountries(
         @SerializedName("iso_3166_1")
-        var iso31661: String = ""
-        var name: String = ""
-    }
+        val iso31661: String,
+        val name: String
+    ) : Serializable
 
-    inner class SpokenLanguages : Serializable {
+    data class SpokenLanguages(
         @SerializedName("iso_639_1")
-        var iso6391: String = ""
-        var name: String = ""
-    }
+        val iso6391: String,
+        val name: String
+    ) : Serializable
 }

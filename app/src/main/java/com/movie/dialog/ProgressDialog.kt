@@ -20,8 +20,8 @@ class ProgressDialog(mContext: Context) : Dialog(mContext) {
         manager.gravity = Gravity.CENTER
         manager.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         manager.dimAmount = 0.4f
-        window.attributes = manager
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.attributes = manager
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setCanceledOnTouchOutside(false)
         setContentView(R.layout.dialog_progress_layout)
     }

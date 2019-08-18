@@ -8,18 +8,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.movie.R
-import com.movie.databinding.ViewMovieListItemBinding
 import com.movie.dialog.ProgressDialog
-import com.movie.model.request.ApiRequest
-import org.koin.android.ext.android.inject
 
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     protected lateinit var mContext: Context
     protected lateinit var viewBinding: T
     protected abstract val layoutResourceId: Int
-    protected val apiRequest: ApiRequest by inject()
     protected lateinit var progress: ProgressDialog
 
     override fun onAttach(context: Context) {

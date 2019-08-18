@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.movie.R
-import com.movie.common.constants.DETAIL_CREDIT_CREW
+import com.movie.common.DETAIL_CREDIT_CREW
 import com.movie.databinding.FragmentDetailCreditCrewBinding
 import com.movie.model.data.CreditResponse
 import com.movie.model.view.DetailCreditCastViewModel
@@ -19,7 +19,7 @@ class MovieDetailCreditCrewFragment : BaseFragment<FragmentDetailCreditCrewBindi
     override val layoutResourceId: Int
         get() = R.layout.fragment_detail_credit_crew
 
-    var crewList: List<CreditResponse.Crew> = emptyList()
+    private var crewList: List<CreditResponse.Crew> = emptyList()
 
     private val detailCreditCastViewModelFactory: DetailCreditCastViewModelFactory by inject()
 
@@ -45,7 +45,7 @@ class MovieDetailCreditCrewFragment : BaseFragment<FragmentDetailCreditCrewBindi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        val detailCreditCastViewModel = ViewModelProviders.of(this, detailCreditCastViewModelFactory)
+        val detailCreditCastViewModel = ViewModelProvider(this, detailCreditCastViewModelFactory)
             .get(DetailCreditCastViewModel::class.java)
         detailCreditCastViewModel.setCrewList(crewList)
         viewBinding.detailCreditCastViewModel = detailCreditCastViewModel

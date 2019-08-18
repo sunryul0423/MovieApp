@@ -17,12 +17,12 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-            <com.movie.customview.view.CoustomActionBar
+            <com.movie.customview.view.CustomActionBar
                     android:id="@+id/cv_actionbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-            </com.movie.customview.view.CoustomActionBar>
+            </com.movie.customview.view.CustomActionBar>
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/srl_refresh_view"
@@ -54,8 +54,7 @@
                                     android:layout_height="match_parent"
                                     app:pageAdapter="@{mainViewModel.upcomingPagerAdapter}"
                                     app:indicator="@{mainViewModel.cvIndicator}"
-                                    app:pageItem="@{mainViewModel.pagerViewModelList}"
-                            />
+                                    app:pageItem="@{mainViewModel.pagerViewModelList}"/>
 
                             <com.movie.customview.view.CustomIndicator
                                     android:id="@+id/cv_indicator"
@@ -65,8 +64,7 @@
                                     android:background="@drawable/shape_main_back_drop_indecator_gradient"
                                     android:gravity="center_horizontal"
                                     android:paddingBottom="@dimen/main_back_drop_padding"
-                                    android:paddingTop="@dimen/main_back_drop_padding"
-                            />
+                                    android:paddingTop="@dimen/main_back_drop_padding"/>
 
                         </FrameLayout>
 
@@ -124,8 +122,7 @@
                                 android:nestedScrollingEnabled="true"
                                 app:recyclerAdapter="@{mainViewModel.topRatedAdapter}"
                                 app:recyclerItem="@{mainViewModel.topRatedList}"
-                                app:isVote="@{false}"
-                        />
+                                app:isVote="@{false}"/>
 
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
@@ -133,12 +130,12 @@
 
         </LinearLayout>
 
-        <com.movie.customview.view.CoustomDrawerView
+        <com.movie.customview.view.CustomDrawerView
                 android:id="@+id/cv_drawer_view"
                 android:layout_width="@dimen/drawer_layout_width"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
-                android:background="@color/common_text_white"
+                android:background="@color/white"
                 android:gravity="center"/>
 
     </androidx.drawerlayout.widget.DrawerLayout>

@@ -2,7 +2,7 @@ package com.movie.model.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.movie.common.constants.IMAGE_URL
+import com.movie.common.IMAGE_URL
 
 class PagerViewModel : BaseViewModel() {
 

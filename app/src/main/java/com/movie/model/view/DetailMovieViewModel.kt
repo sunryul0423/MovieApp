@@ -2,20 +2,13 @@ package com.movie.model.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.crashlytics.android.Crashlytics
-import com.movie.common.constants.IMAGE_URL
-import com.movie.common.utils.CommonUtil
-import com.movie.dialog.ProgressDialog
+import com.movie.common.IMAGE_URL
+import com.movie.interfaces.ApiRequest
 import com.movie.model.data.MovieDetailResponse
-import com.movie.model.request.ApiRequest
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class DetailMovieViewModel(
-    private val apiRequest: ApiRequest,
-    private val progress: ProgressDialog,
-    private val movieId: Int
-) : BaseViewModel() {
+class DetailMovieViewModel(private val apiRequest: ApiRequest) : BaseViewModel() {
 
     private val _movieDetailResponse = MutableLiveData<MovieDetailResponse>()
     private val _title = MutableLiveData<String>()
@@ -33,14 +26,10 @@ class DetailMovieViewModel(
     val posterPath: LiveData<String> get() = _posterPath
     val genresString: LiveData<String> get() = _genresString
 
-    init {
-        reqeustApi()
-    }
-
-    fun reqeustApi() {
-        progress.show()
+    fun requestDetailApi(movieId: Int) {
+        progress.value = true
         addDisposable(
-            apiRequest.getDetail(movieId, CommonUtil.getParam())
+            apiRequest.getDetail(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -59,10 +48,9 @@ class DetailMovieViewModel(
                         }
                     }
                     _genresString.value = stringBuilder.toString()
-                    progress.dismiss()
+                    progress.value = false
                 }, {
-                    progress.dismiss()
-                    Crashlytics.logException(it)
+                    onError(it)
                 })
         )
     }

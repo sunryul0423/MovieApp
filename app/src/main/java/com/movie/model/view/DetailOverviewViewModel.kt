@@ -2,66 +2,71 @@ package com.movie.model.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.crashlytics.android.Crashlytics
-import com.movie.common.constants.API_KEY
-import com.movie.common.constants.TMDB_API_KEY
-import com.movie.common.utils.CommonUtil
 import com.movie.customview.adapter.CreditListAdapter
 import com.movie.customview.adapter.VideoListAdapter
+import com.movie.interfaces.ApiRequest
 import com.movie.model.data.CreditResponse
-import com.movie.model.data.MovieDetailResponse
 import com.movie.model.data.VideoResponse
-import com.movie.model.request.ApiRequest
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class DetailOverviewViewModel(
-    private val apiRequest: ApiRequest,
-    private val movieDetailResponse: MovieDetailResponse,
-    private val movieId: Int
-) : BaseViewModel() {
+class DetailOverviewViewModel(private val apiRequest: ApiRequest) : BaseViewModel() {
 
-    private val _creditResponse = MutableLiveData<CreditResponse>()
-    private val _isVisibleMore = MutableLiveData<Boolean>()
-    private val _overview = MutableLiveData<String>().apply { value = movieDetailResponse.overview }
-    private val _videoList = MutableLiveData<List<VideoResponse.Videos>>()
+    private val creditResponse = MutableLiveData<CreditResponse>()
+    private val isVisibleMore = MutableLiveData<Boolean>()
+    private val overview = MutableLiveData<String>()
+    private val videoList = MutableLiveData<List<VideoResponse.Videos>>()
 
-    val creditResponse: LiveData<CreditResponse> get() = _creditResponse
-    val isVisibleMore: LiveData<Boolean> get() = _isVisibleMore
-    val overview: LiveData<String> get() = _overview
-    val videoList: LiveData<List<VideoResponse.Videos>> get() = _videoList
+
     val videoListAdapter = VideoListAdapter()
     val creditListAdapter = CreditListAdapter()
 
-    init {
-        requestApi()
-    }
-
-    fun requestApi() {
+    fun requestOverviewApi(movieId: Int, overview: String) {
+        progress.value = true
+        this.overview.value = overview
         addDisposable(
-            apiRequest.getVideos(movieId, hashMapOf(API_KEY to TMDB_API_KEY))
+            apiRequest.getVideos(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _videoList.value = it.results
+                    videoList.value = it.results
+                    progress.value = false
                 }, {
-                    Crashlytics.logException(it)
+                    onError(it)
                 })
         )
 
         addDisposable(
-            apiRequest.getCredit(movieId, CommonUtil.getParam())
+            apiRequest.getCredit(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _creditResponse.value = it
+                    creditResponse.value = it
+                    progress.value = false
                 }, {
-                    Crashlytics.logException(it)
+                    onError(it)
                 })
         )
     }
 
     fun setVisibleMore(isVisibleMore: Boolean) {
-        _isVisibleMore.value = isVisibleMore
+        this.isVisibleMore.value = isVisibleMore
     }
+
+    fun getCreditResponse(): LiveData<CreditResponse> {
+        return creditResponse
+    }
+
+    fun isVisibleMore(): LiveData<Boolean> {
+        return isVisibleMore
+    }
+
+    fun getOverview(): LiveData<String> {
+        return overview
+    }
+
+    fun getVideoList(): LiveData<List<VideoResponse.Videos>> {
+        return videoList
+    }
+
 }

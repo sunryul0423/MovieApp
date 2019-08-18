@@ -1,6 +1,5 @@
 package com.movie.customview.adapter
 
-import android.graphics.Bitmap
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager
@@ -8,17 +7,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
+import com.bumptech.glide.request.RequestOptions
 import com.movie.R
-import com.movie.common.constants.CREDIT_COUNT
-import com.movie.common.constants.PAGER_COUNT
-import com.movie.common.constants.SEARCH_SPAN_COUNT
+import com.movie.common.CREDIT_COUNT
+import com.movie.common.PAGER_COUNT
+import com.movie.common.SEARCH_SPAN_COUNT
 import com.movie.customview.view.CustomIndicator
-import com.movie.model.data.*
+import com.movie.model.data.CreditResponse
+import com.movie.model.data.MovieMainResponse
+import com.movie.model.data.RecyclerViewSpacing
+import com.movie.model.data.VideoResponse
 import com.movie.model.view.CreaditInfoViewModel
 import com.movie.model.view.PagerViewModel
 import com.movie.model.view.SearchViewModel
-import jp.wasabeef.glide.transformations.CropCircleTransformation
 
 @BindingAdapter("recyclerAdapter")
 fun setRecyclerAdapter(view: RecyclerView, adapter: CustomListAdapter?) {
@@ -36,7 +37,6 @@ fun setRecyclerItem(view: RecyclerView, movieList: List<MovieMainResponse.Movie>
     movieList?.let {
         val adapter = view.adapter as CustomListAdapter
         adapter.setItem(it, isVote)
-        adapter.notifyDataSetChanged()
     }
 }
 
@@ -65,66 +65,35 @@ fun setPagerAdapter(view: ViewPager, upcomingPagerAdapter: UpcomingPagerAdapter?
 @BindingAdapter("pageItem")
 fun setPageItem(view: ViewPager, pagerViewModelList: MutableList<PagerViewModel>?) {
     pagerViewModelList?.let {
-        (view.adapter as UpcomingPagerAdapter).apply {
+        (view.adapter as UpcomingPagerAdapter).run {
             this.setItem(it)
-            this.notifyDataSetChanged()
         }
     }
 }
 
 @BindingAdapter("imgUrl")
 fun setImageUrl(view: ImageView, url: String?) {
-    url?.let {
-        Glide.with(view.context)
-            .load(it)
-            .override(
-                view.context.resources.displayMetrics.widthPixels,
-                view.context.resources.displayMetrics.widthPixels / 3
-            )
-            .error(R.drawable.film_poster_placeholder)
-            .placeholder(R.drawable.film_poster_placeholder)
-            .into(view)
-    }
+    Glide.with(view.context)
+        .load(url)
+        .override(
+            view.context.resources.displayMetrics.widthPixels,
+            view.context.resources.displayMetrics.widthPixels / 3
+        )
+        .error(R.drawable.film_poster_placeholder)
+        .placeholder(R.drawable.film_poster_placeholder)
+        .into(view)
 }
 
 @BindingAdapter("creditImgUrl")
 fun setcreditImgUrl(view: ImageView, url: String?) {
-    url?.let {
-        val bitmapPool = object : BitmapPool {
-            override fun setSizeMultiplier(p0: Float) {
-            }
-
-            override fun trimMemory(p0: Int) {
-            }
-
-            override fun get(p0: Int, p1: Int, p2: Bitmap.Config?): Bitmap? {
-                return null
-            }
-
-            override fun clearMemory() {
-            }
-
-            override fun getDirty(p0: Int, p1: Int, p2: Bitmap.Config?): Bitmap? {
-                return null
-            }
-
-            override fun getMaxSize(): Int {
-                return 0
-            }
-
-            override fun put(p0: Bitmap?): Boolean {
-                return false
-            }
-        }
-        Glide.with(view.context)
-            .load(url)
-            .override(600, 600)
-            .centerCrop()
-            .bitmapTransform(CropCircleTransformation(bitmapPool))
-            .placeholder(R.drawable.profile)
-            .error(R.drawable.profile)
-            .into(view)
-    }
+    Glide.with(view.context)
+        .load(url)
+        .override(600, 600)
+        .centerCrop()
+        .apply(RequestOptions.circleCropTransform())
+        .placeholder(R.drawable.profile)
+        .error(R.drawable.profile)
+        .into(view)
 }
 
 @BindingAdapter("searchAdapter")
@@ -184,7 +153,6 @@ fun setVideoListItem(view: RecyclerView, videoList: List<VideoResponse.Videos>?)
 
         val adapter = view.adapter as VideoListAdapter
         adapter.setItem(it)
-        adapter.notifyDataSetChanged()
     }
 }
 
@@ -242,7 +210,6 @@ fun setCreditListItem(view: RecyclerView, creditResponse: CreditResponse?) {
         view.addItemDecoration(recyclerViewDecoration)
         val adapter = view.adapter as CreditListAdapter
         adapter.setItem(creaditInfoList)
-        adapter.notifyDataSetChanged()
     }
 }
 
@@ -274,7 +241,6 @@ fun setDetailCreditCastItem(view: RecyclerView, castList: List<CreditResponse.Ca
             creaditInfoList.add(creaditInfoModel)
         }
         adapter.setItem(creaditInfoList)
-        adapter.notifyDataSetChanged()
     }
 }
 
@@ -292,6 +258,5 @@ fun setDetailCreditCrewItem(view: RecyclerView, crewList: List<CreditResponse.Cr
             creaditInfoList.add(creaditInfoModel)
         }
         adapter.setItem(creaditInfoList)
-        adapter.notifyDataSetChanged()
     }
 }

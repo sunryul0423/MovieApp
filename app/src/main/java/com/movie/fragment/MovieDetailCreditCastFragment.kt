@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.movie.R
-import com.movie.common.constants.DETAIL_CREDIT_CAST
+import com.movie.common.DETAIL_CREDIT_CAST
 import com.movie.databinding.FragmentDetailCreditCastBinding
 import com.movie.model.data.CreditResponse
 import com.movie.model.view.DetailCreditCastViewModel
@@ -46,9 +46,10 @@ class MovieDetailCreditCastFragment : BaseFragment<FragmentDetailCreditCastBindi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        val detailCreditCastViewModel = ViewModelProviders.of(this, detailCreditCastViewModelFactory)
-            .get(DetailCreditCastViewModel::class.java)
-        detailCreditCastViewModel.setCastList(castList)
+        val detailCreditCastViewModel =
+            ViewModelProvider(this, detailCreditCastViewModelFactory).get(DetailCreditCastViewModel::class.java).apply {
+                this.setCastList(this@MovieDetailCreditCastFragment.castList)
+            }
         viewBinding.detailCreditCastViewModel = detailCreditCastViewModel
         viewBinding.lifecycleOwner = this
         return view

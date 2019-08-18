@@ -14,7 +14,6 @@ class DetailCreditCastViewModel : BaseViewModel() {
     val crewList: LiveData<List<CreditResponse.Crew>> get() = _crewList
 
     val creditCastAdapter = CreditListAdapter()
-    val creditCrewAdapter = CreditListAdapter()
 
 
     fun setCastList(castList: List<CreditResponse.Cast>) {

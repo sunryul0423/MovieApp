@@ -3,60 +3,74 @@ package com.movie.activity
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.movie.R
-import com.movie.common.constants.FINISH_INTERVAL_TIME
-import com.movie.common.constants.PAGER_COUNT
+import com.movie.common.FINISH_INTERVAL_TIME
+import com.movie.common.PAGER_COUNT
+import com.movie.common.showThrowableToast
+import com.movie.common.showToast
 import com.movie.databinding.ActivityMainBinding
 import com.movie.interfaces.IActionBarClick
 import com.movie.model.view.MainViewModel
 import com.movie.model.view.MainViewModelFactory
+import org.koin.android.ext.android.inject
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
-    override val layoutResourceId: Int
+    override val layoutResourceId
         get() = R.layout.activity_main
 
-    private var backPressedTime: Long = 0L
+    private var backPressedTime = 0L
 
     private lateinit var abToggle: ActionBarDrawerToggle
 
-    private lateinit var mainViewModelFactory: MainViewModelFactory
+    private val mainViewModelFactory: MainViewModelFactory by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mContext = this
         initActionBar(false, getString(R.string.ab_main_title))
         //indecator 생성
         viewBinding.cvIndicator.createDotPanel(
-            10,
-            300,
             PAGER_COUNT,
-            R.drawable.indicator_paging_dot_on,
-            R.drawable.indicator_paging_dot
+            R.drawable.indicator_dot_off,
+            R.drawable.indicator_dot_on
         )
 
         // 바인딩 뷰-모델 연결
-        mainViewModelFactory = MainViewModelFactory(apiRequest, progress)
-        val mainViewModel = ViewModelProviders.of(this, mainViewModelFactory).get(MainViewModel::class.java)
-        mainViewModel.setIndicator(viewBinding.cvIndicator)
+        val mainViewModel = ViewModelProvider(this, mainViewModelFactory).get(MainViewModel::class.java).apply {
+            this.setIndicator(viewBinding.cvIndicator)
+        }
         viewBinding.mainViewModel = mainViewModel
         viewBinding.lifecycleOwner = this
-        coustomActionBar.setActionBarLeftClick(object : IActionBarClick() {
+        customActionBar.setActionBarLeftClick(object : IActionBarClick() {
             override fun onLeftClick() {
                 //슬라이드 메뉴
                 viewBinding.dlView.openDrawer(viewBinding.cvDrawerView)
             }
         })
+
+        liveDataObserver(mainViewModel)
         setView()
     }
 
     override fun onPause() {
         viewBinding.dlView.closeDrawer(viewBinding.cvDrawerView)
         super.onPause()
+    }
+
+    private fun liveDataObserver(mainViewModel: MainViewModel) {
+        mainViewModel.getProgress().observe(this, Observer {
+            if (it)
+                progress.show()
+            else
+                progress.cancel()
+        })
+        mainViewModel.getThrowableData().observe(this, Observer {
+            showThrowableToast(this, it)
+        })
     }
 
     private fun setView() {
@@ -91,7 +105,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 super.onBackPressed()
             } else {
                 backPressedTime = currentTime
-                Toast.makeText(mContext, getString(R.string.app_finish_msg), Toast.LENGTH_SHORT).show()
+                showToast(this, getString(R.string.app_finish_msg))
             }
         }
     }

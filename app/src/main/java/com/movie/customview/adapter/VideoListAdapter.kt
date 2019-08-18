@@ -7,7 +7,7 @@ import android.webkit.WebView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.movie.R
-import com.movie.common.constants.YOUTUBE_URL
+import com.movie.common.YOUTUBE_URL
 import com.movie.databinding.ViewVideoListItemBinding
 import com.movie.model.data.VideoResponse
 

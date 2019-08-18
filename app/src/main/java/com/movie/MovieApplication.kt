@@ -1,18 +1,20 @@
 package com.movie
 
-import androidx.multidex.MultiDex
-import androidx.multidex.MultiDexApplication
-import com.crashlytics.android.Crashlytics
+import android.app.Application
 import com.movie.di.appModule
-import io.fabric.sdk.android.Fabric
-import org.koin.android.ext.android.startKoin
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
-class MovieApplication : MultiDexApplication() {
+class MovieApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        MultiDex.install(this)
-        startKoin(this, appModule)
+        startKoin {
+            androidLogger()
+            androidContext(this@MovieApplication)
+            modules(appModule)
+        }
 //        Fabric.with(this, Crashlytics())
     }
 }

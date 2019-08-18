@@ -4,35 +4,77 @@ import com.google.gson.annotations.SerializedName
 
 
 data class MovieMainResponse(
-    var page: Int, var results: List<Movie>,
+    val page: Int, val results: List<Movie>,
     @SerializedName("total_results")
-    var totalResults: Int,
+    val totalResults: Int,
     @SerializedName("total_pages")
-    var totalPages: Int
+    val totalPages: Int
 ) {
     data class Movie(
         @SerializedName("poster_path")
-        var posterPath: String,
-        var adult: Boolean,
+        val posterPath: String,
+        val adult: Boolean,
         @SerializedName("overview")
-        var overView: String,
+        val overView: String,
         @SerializedName("release_date")
-        var releaseDate: String,
+        val releaseDate: String,
         @SerializedName("genre_ids")
-        var genreIds: IntArray,
-        var id: Int,
+        val genreIds: IntArray,
+        val id: Int,
         @SerializedName("original_title")
-        var originalTitle: String,
+        val originalTitle: String,
         @SerializedName("original_language")
-        var originalLanguage: String,
-        var title: String,
+        val originalLanguage: String,
+        val title: String,
         @SerializedName("backdrop_path")
-        var backdropPath: String,
-        var popularity: Double,
+        val backdropPath: String,
+        val popularity: Double,
         @SerializedName("vote_count")
-        var voteCount: Int,
-        var video: Boolean,
+        val voteCount: Int,
+        val video: Boolean,
         @SerializedName("vote_average")
-        var voteAverage: Double
-    )
+        val voteAverage: Double
+    ) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as Movie
+
+            if (posterPath != other.posterPath) return false
+            if (adult != other.adult) return false
+            if (overView != other.overView) return false
+            if (releaseDate != other.releaseDate) return false
+            if (!genreIds.contentEquals(other.genreIds)) return false
+            if (id != other.id) return false
+            if (originalTitle != other.originalTitle) return false
+            if (originalLanguage != other.originalLanguage) return false
+            if (title != other.title) return false
+            if (backdropPath != other.backdropPath) return false
+            if (popularity != other.popularity) return false
+            if (voteCount != other.voteCount) return false
+            if (video != other.video) return false
+            if (voteAverage != other.voteAverage) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = posterPath.hashCode()
+            result = 31 * result + adult.hashCode()
+            result = 31 * result + overView.hashCode()
+            result = 31 * result + releaseDate.hashCode()
+            result = 31 * result + genreIds.contentHashCode()
+            result = 31 * result + id
+            result = 31 * result + originalTitle.hashCode()
+            result = 31 * result + originalLanguage.hashCode()
+            result = 31 * result + title.hashCode()
+            result = 31 * result + backdropPath.hashCode()
+            result = 31 * result + popularity.hashCode()
+            result = 31 * result + voteCount
+            result = 31 * result + video.hashCode()
+            result = 31 * result + voteAverage.hashCode()
+            return result
+        }
+    }
 }

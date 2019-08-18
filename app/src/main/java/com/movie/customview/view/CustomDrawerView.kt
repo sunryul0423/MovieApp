@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.LinearLayout
 import com.movie.R
 
-class CoustomDrawerView : LinearLayout {
+class CustomDrawerView : LinearLayout {
 
     private val mContext: Context
 

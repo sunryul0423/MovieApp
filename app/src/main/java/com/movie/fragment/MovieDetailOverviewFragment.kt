@@ -7,27 +7,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.jakewharton.rxbinding2.view.RxView
 import com.movie.R
 import com.movie.activity.DetailCreditActivity
 import com.movie.activity.DetailMovieActivity
-import com.movie.common.constants.DETAIL_CREDIT
-import com.movie.common.constants.MOVIE_DETAIL_RESPONSE_KEY
-import com.movie.common.constants.MOVIE_ID
-import com.movie.common.constants.MOVIE_NAME
+import com.movie.common.*
 import com.movie.databinding.FragmentDetailOverviewBinding
 import com.movie.interfaces.IScrollChangeListener
 import com.movie.model.data.MovieDetailResponse
 import com.movie.model.view.DetailOverviewViewModel
 import com.movie.model.view.DetailOverviewViewModelFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
+import org.koin.android.ext.android.inject
+import java.util.concurrent.TimeUnit
 
-class MovieDetailOverviewFragment : BaseFragment<FragmentDetailOverviewBinding>(), View.OnClickListener {
+class MovieDetailOverviewFragment : BaseFragment<FragmentDetailOverviewBinding>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_detail_overview
 
 
-    private lateinit var detailOverviewViewModelFactory: DetailOverviewViewModelFactory
+    private val detailOverviewViewModelFactory: DetailOverviewViewModelFactory by inject()
 
     private lateinit var movieDetailResponse: MovieDetailResponse
     private var movieId: Int = 0
@@ -58,18 +60,46 @@ class MovieDetailOverviewFragment : BaseFragment<FragmentDetailOverviewBinding>(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        detailOverviewViewModelFactory = DetailOverviewViewModelFactory(apiRequest, movieDetailResponse, movieId)
         val detailOverviewViewModel =
-            ViewModelProviders.of(this, detailOverviewViewModelFactory).get(DetailOverviewViewModel::class.java)
-        detailOverviewViewModel.setVisibleMore(true)
+            ViewModelProvider(this, detailOverviewViewModelFactory).get(DetailOverviewViewModel::class.java).apply {
+                this.setVisibleMore(true)
+                this.requestOverviewApi(movieId, movieDetailResponse.overview)
+            }
         viewBinding.detailOverviewViewModel = detailOverviewViewModel
         viewBinding.lifecycleOwner = this
+
+        rxEvent(detailOverviewViewModel)
+        liveDataObserver(detailOverviewViewModel)
         setView()
         return view
     }
 
+    private fun liveDataObserver(detailOverviewViewModel: DetailOverviewViewModel) {
+        detailOverviewViewModel.getProgress().observe(this, Observer {
+            if (it)
+                progress.show()
+            else
+                progress.cancel()
+        })
+        detailOverviewViewModel.getThrowableData().observe(this, Observer {
+            showThrowableToast(mContext, it)
+        })
+    }
 
-    fun setView() {
+    private fun rxEvent(detailOverviewViewModel: DetailOverviewViewModel) {
+        detailOverviewViewModel.addDisposable(
+            RxView.clicks(viewBinding.tvCreditAll)
+                .throttleFirst(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                .subscribe {
+                    val intent = Intent(mContext, DetailCreditActivity::class.java)
+                    intent.putExtra(MOVIE_NAME, movieDetailResponse.title)
+                    intent.putExtra(DETAIL_CREDIT, viewBinding.detailOverviewViewModel?.getCreditResponse()?.value)
+                    ActivityCompat.startActivity(mContext, intent, null)
+                }
+        )
+    }
+
+    private fun setView() {
         viewBinding.csView.requestFocus()
         viewBinding.csView.isNestedScrollingEnabled = true
         viewBinding.csView.setOnScrollChangeListener { _, _, _, _, _ ->
@@ -77,7 +107,6 @@ class MovieDetailOverviewFragment : BaseFragment<FragmentDetailOverviewBinding>(
                 scrollChangeListener.onScroll(true)
             }
         }
-        viewBinding.tvCreditAll.setOnClickListener(this)
 
         viewBinding.vDetailReleaseDate.tvDetailInfoTitle.text = resources.getString(R.string.detail_info_release_date)
         viewBinding.vDetailReleaseDate.tvDetailInfoValue.text = movieDetailResponse.releaseDate
@@ -121,17 +150,6 @@ class MovieDetailOverviewFragment : BaseFragment<FragmentDetailOverviewBinding>(
                 if (movieDetailResponse.productionCompanies.size != 1 && i != movieDetailResponse.productionCompanies.size - 1) {
                     str.append("\n")
                 }
-            }
-        }
-    }
-
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.tv_credit_all -> {
-                val intent = Intent(mContext, DetailCreditActivity::class.java)
-                intent.putExtra(MOVIE_NAME, movieDetailResponse.title)
-                intent.putExtra(DETAIL_CREDIT, viewBinding.detailOverviewViewModel?.creditResponse?.value)
-                ActivityCompat.startActivity(mContext, intent, null)
             }
         }
     }

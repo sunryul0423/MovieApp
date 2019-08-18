@@ -15,7 +15,7 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/detail_margin">
 
-        <com.movie.customview.view.CoustomScrollView
+        <com.movie.customview.view.CustomScrollView
                 android:id="@+id/cs_view"
                 android:layout_width="match_parent"
                 android:descendantFocusability="blocksDescendants"
@@ -35,7 +35,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/detail_story"
-                            android:textColor="@color/common_text_white"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/movie_tile_font"/>
 
                     <TextView
@@ -62,14 +62,14 @@
                         android:ellipsize="end"
                         android:maxLines="3"
                         android:text="@{detailOverviewViewModel.overview}"
-                        android:textColor="@color/common_text_white"/>
+                        android:textColor="@color/white"/>
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/detail_margin"
                         android:text="@string/detail_video"
-                        android:textColor="@color/common_text_white"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/movie_tile_font"/>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -92,7 +92,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/detail_credits"
-                            android:textColor="@color/common_text_white"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/movie_tile_font"/>
 
                     <TextView
@@ -123,7 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/detail_margin"
                         android:text="@string/detail_info"
-                        android:textColor="@color/common_text_white"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/movie_tile_font"/>
 
                 <include
@@ -148,7 +148,7 @@
 
             </LinearLayout>
 
-        </com.movie.customview.view.CoustomScrollView>
+        </com.movie.customview.view.CustomScrollView>
     </LinearLayout>
 
 </layout>

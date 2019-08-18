@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.PagerAdapter
 import com.movie.R
 import com.movie.activity.DetailMovieActivity
-import com.movie.common.constants.MOVIE_ID
+import com.movie.common.MOVIE_ID
 import com.movie.databinding.ViewPagerLayoutBinding
 import com.movie.model.view.PagerViewModel
 

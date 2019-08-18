@@ -21,8 +21,7 @@
                 android:nestedScrollingEnabled="false"
                 app:searchAdapter="@{detailSimilarViewModel.similarGridAdapter}"
                 app:searchItem="@{detailSimilarViewModel.similarList}"
-                app:searchAdd="@{safeUnbox(detailSimilarViewModel.isAdd)}"
-        />
+                app:searchAdd="@{safeUnbox(detailSimilarViewModel.isAdd)}"/>
 
     </LinearLayout>
 </layout>

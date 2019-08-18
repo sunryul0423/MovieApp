@@ -31,7 +31,7 @@
                 android:layout_marginTop="@dimen/main_list_title"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/common_text_white"
+                android:textColor="@color/white"
                 android:textSize="@dimen/detail_overview_credit_name"
                 android:text="@{creaditInfoViewModel.name}"
         />

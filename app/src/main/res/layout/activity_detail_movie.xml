@@ -10,7 +10,7 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/detail_background">
+            android:background="@color/black">
 
         <ImageView
                 android:id="@+id/iv_back_drop"
@@ -22,14 +22,14 @@
                 app:imgUrl="@{detailMovieViewModel.backdropPath}"
         />
 
-        <com.movie.customview.view.CoustomActionBar
+        <com.movie.customview.view.CustomActionBar
                 android:id="@+id/cv_actionbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-        </com.movie.customview.view.CoustomActionBar>
+        </com.movie.customview.view.CustomActionBar>
 
-        <com.movie.customview.view.CoustomScrollView
+        <com.movie.customview.view.CustomScrollView
                 android:id="@+id/cs_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -65,7 +65,7 @@
                                 android:id="@+id/tv_detail_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/common_text_white"
+                                android:textColor="@color/white"
                                 android:text="@{detailMovieViewModel.title}"/>
 
                         <TextView
@@ -92,7 +92,7 @@
                                     android:drawableStart="@drawable/baseline_star_black"
                                     android:drawableTint="@color/image_star"
                                     android:gravity="center_vertical"
-                                    android:textColor="@color/common_text_white"
+                                    android:textColor="@color/white"
                                     android:text="@{detailMovieViewModel.voteAverage}"/>
 
                             <TextView
@@ -100,7 +100,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/detail_margin"
-                                    android:textColor="@color/common_text_white"
+                                    android:textColor="@color/white"
                                     android:text="@{detailMovieViewModel.genresString}"/>
 
                         </LinearLayout>
@@ -117,7 +117,7 @@
                                 android:paddingStart="@dimen/detail_margin"
                                 android:paddingTop="@dimen/detail_btn_top_margin"
                                 android:text="@string/detail_video_title"
-                                android:textColor="@color/common_text_white"
+                                android:textColor="@color/white"
                         />
 
                     </RelativeLayout>
@@ -141,7 +141,7 @@
                             android:paddingBottom="@dimen/detail_btn_top_margin"
                             android:paddingTop="@dimen/detail_btn_top_margin"
                             android:text="@string/overview_title"
-                            android:textColor="@color/common_text_white"/>
+                            android:textColor="@color/white"/>
 
                     <RadioButton
                             android:id="@+id/rb_detail_similar"
@@ -154,7 +154,7 @@
                             android:paddingBottom="@dimen/detail_btn_top_margin"
                             android:paddingTop="@dimen/detail_btn_top_margin"
                             android:text="@string/similar_title"
-                            android:textColor="@color/common_text_white"/>
+                            android:textColor="@color/white"/>
 
                 </RadioGroup>
 
@@ -164,7 +164,7 @@
                         android:layout_height="wrap_content"/>
 
             </LinearLayout>
-        </com.movie.customview.view.CoustomScrollView>
+        </com.movie.customview.view.CustomScrollView>
 
     </RelativeLayout>
 

@@ -1,6 +1,5 @@
 package com.movie.customview.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,17 +8,7 @@ import com.movie.R
 import com.movie.databinding.ViewCreditListItemBinding
 import com.movie.model.view.CreaditInfoViewModel
 
-class CreditListHolder(private val binding: ViewCreditListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-    private val context: Context = binding.root.context
-
-    internal fun setData(creaditInfoList: List<CreaditInfoViewModel>, position: Int) {
-        binding.llCreditListItem.setOnClickListener {
-            //            val intent = Intent(context, DetailMovieActivity::class.java)
-//            intent.putExtra(MOVIE_ID, movieList[position].id)
-//            ActivityCompat.startActivity(context, intent, null)
-        }
-    }
-}
+class CreditListHolder(binding: ViewCreditListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
 class CreditListAdapter : RecyclerView.Adapter<CreditListHolder>() {
 
@@ -48,7 +37,6 @@ class CreditListAdapter : RecyclerView.Adapter<CreditListHolder>() {
 
     override fun onBindViewHolder(holder: CreditListHolder, position: Int) {
         binding.creaditInfoViewModel = creaditInfoList[position]
-        holder.setData(creaditInfoList, position)
     }
 
 }

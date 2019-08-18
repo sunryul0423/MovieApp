@@ -5,29 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.movie.R
-import com.movie.interfaces.IRxResult
-import com.movie.interfaces.IScrollChangeListener
 import com.movie.activity.DetailMovieActivity
-import com.movie.common.constants.MOVIE_ID
-import com.movie.common.utils.CommonUtil
-import com.movie.customview.adapter.RecyclerViewDecoration
-import com.movie.customview.adapter.SimilarGridAdapter
+import com.movie.common.MOVIE_ID
+import com.movie.common.showThrowableToast
 import com.movie.databinding.FragmentDetailSimilarBinding
-import com.movie.model.data.MovieMainResponse
-import com.movie.model.data.RecyclerViewSpacing
+import com.movie.interfaces.IScrollChangeListener
 import com.movie.model.view.DetailSimilarViewModel
 import com.movie.model.view.DetailSimilarViewModelFactory
+import org.koin.android.ext.android.inject
 
 class MovieDetailSimilarFragment : BaseFragment<FragmentDetailSimilarBinding>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_detail_similar
 
-    private lateinit var detailSimilarViewModelFactory: DetailSimilarViewModelFactory
+    private val detailSimilarViewModelFactory: DetailSimilarViewModelFactory by inject()
 
     private var movieId: Int = 0
 
@@ -52,17 +47,31 @@ class MovieDetailSimilarFragment : BaseFragment<FragmentDetailSimilarBinding>() 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         movieId = arguments?.getInt(MOVIE_ID) ?: 0
-        detailSimilarViewModelFactory = DetailSimilarViewModelFactory(apiRequest, progress, movieId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        val detailSimilarViewModel = ViewModelProviders.of(this, detailSimilarViewModelFactory).get(
-            DetailSimilarViewModel::class.java
-        )
+        val detailSimilarViewModel =
+            ViewModelProvider(this, detailSimilarViewModelFactory).get(DetailSimilarViewModel::class.java).apply {
+                this.requestApi(movieId, false)
+            }
         viewBinding.detailSimilarViewModel = detailSimilarViewModel
         viewBinding.lifecycleOwner = this
 
+        liveDataObserver(detailSimilarViewModel)
+
         return view
+    }
+
+    private fun liveDataObserver(detailSimilarViewModel: DetailSimilarViewModel) {
+        detailSimilarViewModel.getProgress().observe(this, Observer {
+            if (it)
+                progress.show()
+            else
+                progress.cancel()
+        })
+        detailSimilarViewModel.getThrowableData().observe(this, Observer {
+            showThrowableToast(mContext, it)
+        })
     }
 }

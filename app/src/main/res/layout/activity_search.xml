@@ -12,18 +12,18 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/detail_background"
+            android:background="@color/black"
             android:orientation="vertical"
             android:paddingBottom="@dimen/detail_margin">
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/ab_content_height"
+                android:layout_height="?actionBarSize"
                 android:gravity="center_vertical">
 
             <LinearLayout
                     android:id="@+id/ll_back"
-                    android:layout_width="@dimen/ab_content_height"
+                    android:layout_width="?actionBarSize"
                     android:layout_height="match_parent"
                     android:gravity="center">
 
@@ -31,7 +31,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/baseline_arrow_back_ios_black"
-                        android:backgroundTint="@color/common_text_white"
+                        android:backgroundTint="@color/white"
                         android:contentDescription="@null"/>
 
             </LinearLayout>
@@ -47,23 +47,23 @@
                     android:inputType="text"
                     android:lines="1"
                     android:padding="@dimen/ab_search_background"
-                    android:textColor="@color/common_text_white"
+                    android:textColor="@color/white"
                     android:textColorHint="@color/main_back_drop_holder"
-                    android:textSize="@dimen/ab_search_text"/>
+                    android:textSize="@dimen/ab_search_text"
+                    android:importantForAutofill="no"
+                    tools:targetApi="o"/>
 
             <LinearLayout
                     android:id="@+id/ll_search"
-                    android:layout_width="@dimen/ab_content_height"
+                    android:layout_width="?actionBarSize"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:onClickListener="@{() -> searchViewModel.reqeustApi(1, false)}"
-            >
+                    android:gravity="center">
 
                 <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/baseline_search_black"
-                        android:backgroundTint="@color/common_text_white"
+                        android:backgroundTint="@color/white"
                         android:contentDescription="@null"/>
 
             </LinearLayout>
@@ -78,8 +78,7 @@
                 app:searchAdapter="@{searchViewModel.searchGridAdapter}"
                 app:searchItem="@{searchViewModel.searchList}"
                 app:searchAdd="@{safeUnbox(searchViewModel.isAdd)}"
-                app:searchModel="@{searchViewModel}"
-        />
+                app:searchModel="@{searchViewModel}"/>
 
     </LinearLayout>
 

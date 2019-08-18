@@ -11,6 +11,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion = '28.0.3'
     defaultConfig {
         applicationId "com.movie"
         minSdkVersion rootProject.minSdkVersion
@@ -18,7 +19,6 @@ android {
         versionCode 1
         versionName "1.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true //백터 그래픽
 
         javaCompileOptions { //오류 검사 비활성화 (불필요한 주석 프로세서)
@@ -42,12 +42,6 @@ android {
             shrinkResources true //리소스 축소
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-
-    dexOptions {
-        preDexLibraries = false // 라이브러리 종속성 pre-dex
-        jumboMode true
-        javaMaxHeapSize "8g" //DEX 컴파일러의 최대 힙 크기
     }
 
     lintOptions {
@@ -78,25 +72,30 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation "androidx.core:core-ktx:$coreVersion"
-    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha03'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta03'
+
     // Rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.3'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.2.0'
+
     // Koin
-    implementation 'org.koin:koin-android:1.0.2'
-    implementation 'org.koin:koin-androidx-scope:1.0.2'
+    implementation 'org.koin:koin-android:2.0.1'
+    implementation 'org.koin:koin-androidx-scope:2.0.1'
+
     // Glide
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'jp.wasabeef:glide-transformations:1.0.6'
+    kapt 'com.github.bumptech.glide:compiler:4.9.0'
+
     // Http
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
     //Fabric
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
         transitive = true

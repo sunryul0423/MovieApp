@@ -1,3 +1,3 @@
 package com.movie.model.data
 
-class RecyclerViewSpacing(var left: Int, var top: Int, var right: Int, var bottom: Int)
+class RecyclerViewSpacing(val left: Int, val top: Int, val right: Int, val bottom: Int)
