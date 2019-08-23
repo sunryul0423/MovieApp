@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import com.movie.R
-import com.movie.common.DETAIL_CREDIT_CAST
+import com.movie.util.DETAIL_CREDIT_CAST
 import com.movie.databinding.FragmentDetailCreditCastBinding
 import com.movie.model.data.CreditResponse
 import com.movie.model.view.DetailCreditCastViewModel
-import com.movie.model.view.DetailCreditCastViewModelFactory
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MovieDetailCreditCastFragment : BaseFragment<FragmentDetailCreditCastBinding>() {
@@ -21,8 +19,6 @@ class MovieDetailCreditCastFragment : BaseFragment<FragmentDetailCreditCastBindi
         get() = R.layout.fragment_detail_credit_cast
 
     private var castList: List<CreditResponse.Cast> = emptyList()
-
-    private val detailCreditCastViewModelFactory: DetailCreditCastViewModelFactory by inject()
 
     companion object {
         fun newInstance(creditResponse: CreditResponse): MovieDetailCreditCastFragment {
@@ -46,10 +42,8 @@ class MovieDetailCreditCastFragment : BaseFragment<FragmentDetailCreditCastBindi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        val detailCreditCastViewModel =
-            ViewModelProvider(this, detailCreditCastViewModelFactory).get(DetailCreditCastViewModel::class.java).apply {
-                this.setCastList(this@MovieDetailCreditCastFragment.castList)
-            }
+        val detailCreditCastViewModel: DetailCreditCastViewModel by viewModel()
+        detailCreditCastViewModel.setCastList(this@MovieDetailCreditCastFragment.castList)
         viewBinding.detailCreditCastViewModel = detailCreditCastViewModel
         viewBinding.lifecycleOwner = this
         return view

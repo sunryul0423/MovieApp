@@ -9,15 +9,15 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.movie.R
-import com.movie.common.CREDIT_COUNT
-import com.movie.common.PAGER_COUNT
-import com.movie.common.SEARCH_SPAN_COUNT
+import com.movie.util.CREDIT_COUNT
+import com.movie.util.PAGER_COUNT
+import com.movie.util.SEARCH_SPAN_COUNT
 import com.movie.customview.view.CustomIndicator
 import com.movie.model.data.CreditResponse
 import com.movie.model.data.MovieMainResponse
 import com.movie.model.data.RecyclerViewSpacing
 import com.movie.model.data.VideoResponse
-import com.movie.model.view.CreaditInfoViewModel
+import com.movie.model.view.CreditInfoViewModel
 import com.movie.model.view.PagerViewModel
 import com.movie.model.view.SearchViewModel
 
@@ -41,7 +41,7 @@ fun setRecyclerItem(view: RecyclerView, movieList: List<MovieMainResponse.Movie>
 }
 
 @BindingAdapter("pageAdapter", "indicator")
-fun setPagerAdapter(view: ViewPager, upcomingPagerAdapter: UpcomingPagerAdapter?, indicator: CustomIndicator) {
+fun setPagerAdapter(view: ViewPager, upcomingPagerAdapter: UpcomingPagerAdapter?, indicator: CustomIndicator?) {
     upcomingPagerAdapter?.let {
         with(view) {
             adapter = it
@@ -55,7 +55,7 @@ fun setPagerAdapter(view: ViewPager, upcomingPagerAdapter: UpcomingPagerAdapter?
                 }
 
                 override fun onPageSelected(position: Int) {
-                    indicator.selectDot(position)
+                    indicator?.selectDot(position)
                 }
             })
         }
@@ -85,7 +85,7 @@ fun setImageUrl(view: ImageView, url: String?) {
 }
 
 @BindingAdapter("creditImgUrl")
-fun setcreditImgUrl(view: ImageView, url: String?) {
+fun setCreditImgUrl(view: ImageView, url: String?) {
     Glide.with(view.context)
         .load(url)
         .override(600, 600)
@@ -126,7 +126,7 @@ fun setSearchModel(view: RecyclerView, searchViewModel: SearchViewModel?) {
     searchViewModel?.let {
         view.setOnScrollChangeListener { _, _, _, _, _ ->
             if (!view.canScrollVertically(1)) { //최하단 스크롤
-                it.reqeustApi(it.correntPage, true)
+                it.requestSearchApi(it.currentPage, true)
             }
         }
     }
@@ -171,19 +171,19 @@ fun setCreditListAdapter(view: RecyclerView, adapter: CreditListAdapter?) {
 fun setCreditListItem(view: RecyclerView, creditResponse: CreditResponse?) {
     creditResponse?.let {
 
-        val creaditInfoList: MutableList<CreaditInfoViewModel> = mutableListOf()
+        val creditInfoList: MutableList<CreditInfoViewModel> = mutableListOf()
         var castList = it.cast
         val crewList = it.crew
 
         for (i in crewList.indices) {
             if ("Director" == crewList[i].job) {
-                val creaditInfoModel =
-                    CreaditInfoViewModel().apply {
+                val creditInfoModel =
+                    CreditInfoViewModel().apply {
                         setImageUrl(crewList[i].profilePath)
                         setName(crewList[i].name)
                         setPart(crewList[i].job)
                     }
-                creaditInfoList.add(creaditInfoModel)
+                creditInfoList.add(creditInfoModel)
                 break
             }
         }
@@ -192,24 +192,24 @@ fun setCreditListItem(view: RecyclerView, creditResponse: CreditResponse?) {
             castList = castList.subList(0, CREDIT_COUNT)
         }
         for (i in castList.indices) {
-            val creaditInfoModel =
-                CreaditInfoViewModel().apply {
+            val creditInfoModel =
+                CreditInfoViewModel().apply {
                     setImageUrl(castList[i].profilePath)
                     setName(castList[i].name)
                     setPart(castList[i].character)
                 }
-            creaditInfoList.add(creaditInfoModel)
+            creditInfoList.add(creditInfoModel)
         }
 
         val spacing: Int = view.context.resources.getDimensionPixelSize(R.dimen.detail_overview_credit_divider)
         val recyclerViewDecoration = RecyclerViewDecoration(
             false,
-            creaditInfoList.size,
+            creditInfoList.size,
             RecyclerViewSpacing(spacing, spacing, spacing, spacing)
         )
         view.addItemDecoration(recyclerViewDecoration)
         val adapter = view.adapter as CreditListAdapter
-        adapter.setItem(creaditInfoList)
+        adapter.setItem(creditInfoList)
     }
 }
 
@@ -230,17 +230,17 @@ fun setDetailCreditAdapter(view: RecyclerView, adapter: CreditListAdapter?) {
 fun setDetailCreditCastItem(view: RecyclerView, castList: List<CreditResponse.Cast>?) {
     castList?.let {
         val adapter = view.adapter as CreditListAdapter
-        val creaditInfoList: MutableList<CreaditInfoViewModel> = mutableListOf()
+        val creditInfoList: MutableList<CreditInfoViewModel> = mutableListOf()
         for (i in castList.indices) {
-            val creaditInfoModel =
-                CreaditInfoViewModel().apply {
+            val creditInfoModel =
+                CreditInfoViewModel().apply {
                     setImageUrl(castList[i].profilePath)
                     setName(castList[i].name)
                     setPart(castList[i].character)
                 }
-            creaditInfoList.add(creaditInfoModel)
+            creditInfoList.add(creditInfoModel)
         }
-        adapter.setItem(creaditInfoList)
+        adapter.setItem(creditInfoList)
     }
 }
 
@@ -248,15 +248,15 @@ fun setDetailCreditCastItem(view: RecyclerView, castList: List<CreditResponse.Ca
 fun setDetailCreditCrewItem(view: RecyclerView, crewList: List<CreditResponse.Crew>?) {
     crewList?.let {
         val adapter = view.adapter as CreditListAdapter
-        val creaditInfoList: MutableList<CreaditInfoViewModel> = mutableListOf()
+        val creditInfoList: MutableList<CreditInfoViewModel> = mutableListOf()
         for (i in crewList.indices) {
-            val creaditInfoModel = CreaditInfoViewModel().apply {
+            val creditInfoModel = CreditInfoViewModel().apply {
                 setImageUrl(crewList[i].profilePath)
                 setName(crewList[i].name)
                 setPart(crewList[i].job)
             }
-            creaditInfoList.add(creaditInfoModel)
+            creditInfoList.add(creditInfoModel)
         }
-        adapter.setItem(creaditInfoList)
+        adapter.setItem(creditInfoList)
     }
 }

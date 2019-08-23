@@ -2,10 +2,9 @@ package com.movie.model.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.movie.R
-import com.movie.common.NOW_PALY_PAGER_COUNT
-import com.movie.common.PAGER_COUNT
-import com.movie.common.POPULAR_COUNT
+import com.movie.util.NOW_PLAY_PAGER_COUNT
+import com.movie.util.PAGER_COUNT
+import com.movie.util.POPULAR_COUNT
 import com.movie.customview.adapter.CustomListAdapter
 import com.movie.customview.adapter.UpcomingPagerAdapter
 import com.movie.customview.view.CustomIndicator
@@ -34,11 +33,7 @@ class MainViewModel(private val apiRequest: ApiRequest) : BaseViewModel() {
 
     fun requestApi() {
         upcomingPagerAdapter.value = UpcomingPagerAdapter()
-        cvIndicator.value?.createDotPanel(
-            PAGER_COUNT,
-            R.drawable.indicator_dot_off,
-            R.drawable.indicator_dot_on
-        )
+        cvIndicator.value?.selectDot(0)
         progress.value = true
         addDisposable(
             apiRequest.getUpcoming()
@@ -72,8 +67,8 @@ class MainViewModel(private val apiRequest: ApiRequest) : BaseViewModel() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    if (NOW_PALY_PAGER_COUNT < it.results.size) {
-                        nowScreenList.value = it.results.subList(0, NOW_PALY_PAGER_COUNT)
+                    if (NOW_PLAY_PAGER_COUNT < it.results.size) {
+                        nowScreenList.value = it.results.subList(0, NOW_PLAY_PAGER_COUNT)
                     } else {
                         nowScreenList.value = it.results
                     }

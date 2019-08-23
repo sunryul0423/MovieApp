@@ -2,9 +2,9 @@ package com.movie.model.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.movie.common.IMAGE_URL
+import com.movie.util.IMAGE_URL
 
-class CreaditInfoViewModel : BaseViewModel() {
+class CreditInfoViewModel : BaseViewModel() {
 
     private val _url = MutableLiveData<String>()
     private val _name = MutableLiveData<String>()

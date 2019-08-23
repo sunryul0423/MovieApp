@@ -4,25 +4,21 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.movie.R
-import com.movie.common.DETAIL_CREDIT
-import com.movie.common.MOVIE_NAME
+import com.movie.util.DETAIL_CREDIT
+import com.movie.util.MOVIE_NAME
 import com.movie.databinding.ActivityDetailCreditBinding
 import com.movie.fragment.MovieDetailCreditCastFragment
 import com.movie.fragment.MovieDetailCreditCrewFragment
 import com.movie.model.data.CreditResponse
 import com.movie.model.view.DetailCreditModel
-import com.movie.model.view.DetailCreditModelFactory
 import kotlinx.android.synthetic.main.view_action_bar.view.*
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailCreditActivity : BaseActivity<ActivityDetailCreditBinding>() {
 
     override val layoutResourceId: Int
         get() = R.layout.activity_detail_credit
-
-    private val detailCreditModelFactory: DetailCreditModelFactory by inject()
 
     private lateinit var creditResponse: CreditResponse
 
@@ -31,11 +27,8 @@ class DetailCreditActivity : BaseActivity<ActivityDetailCreditBinding>() {
         initActionBar(true, intent.getStringExtra(MOVIE_NAME))
 
         creditResponse = intent.getSerializableExtra(DETAIL_CREDIT) as CreditResponse
-
-        val detailCreditModel =
-            ViewModelProvider(this, detailCreditModelFactory).get(DetailCreditModel::class.java).apply {
-                this.setCreditResponse(creditResponse)
-            }
+        val detailCreditModel: DetailCreditModel by viewModel()
+        detailCreditModel.setCreditResponse(creditResponse)
         viewBinding.run {
             this.detailCreditModel = detailCreditModel
             this.lifecycleOwner = this@DetailCreditActivity

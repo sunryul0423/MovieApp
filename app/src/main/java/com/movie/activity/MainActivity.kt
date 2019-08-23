@@ -6,17 +6,15 @@ import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.movie.R
-import com.movie.common.FINISH_INTERVAL_TIME
-import com.movie.common.PAGER_COUNT
-import com.movie.common.showThrowableToast
-import com.movie.common.showToast
+import com.movie.util.FINISH_INTERVAL_TIME
+import com.movie.util.PAGER_COUNT
+import com.movie.util.showThrowableToast
+import com.movie.util.showToast
 import com.movie.databinding.ActivityMainBinding
 import com.movie.interfaces.IActionBarClick
 import com.movie.model.view.MainViewModel
-import com.movie.model.view.MainViewModelFactory
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -27,12 +25,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private lateinit var abToggle: ActionBarDrawerToggle
 
-    private val mainViewModelFactory: MainViewModelFactory by inject()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initActionBar(false, getString(R.string.ab_main_title))
-        //indecator 생성
+        //indicator 생성
         viewBinding.cvIndicator.createDotPanel(
             PAGER_COUNT,
             R.drawable.indicator_dot_off,
@@ -40,9 +36,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         )
 
         // 바인딩 뷰-모델 연결
-        val mainViewModel = ViewModelProvider(this, mainViewModelFactory).get(MainViewModel::class.java).apply {
-            this.setIndicator(viewBinding.cvIndicator)
-        }
+        val mainViewModel: MainViewModel by viewModel()
+        mainViewModel.setIndicator(viewBinding.cvIndicator)
         viewBinding.mainViewModel = mainViewModel
         viewBinding.lifecycleOwner = this
         customActionBar.setActionBarLeftClick(object : IActionBarClick() {

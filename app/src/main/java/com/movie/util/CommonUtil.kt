@@ -1,17 +1,12 @@
-package com.movie.common
+package com.movie.util
 
 import android.content.Context
 import android.widget.Toast
 import com.movie.R
 import java.io.IOException
 
-
 fun getParam(): Map<String, String> {
-    return hashMapOf(API_KEY to TMDB_API_KEY, LANGUAGE to LANGUAGE_KO)
-}
-
-fun getSearchParam(text: String): Map<String, String> {
-    return hashMapOf(API_KEY to TMDB_API_KEY, LANGUAGE to LANGUAGE_KO, REGION to LANGUAGE_KO, QUERY to text)
+    return hashMapOf(API_KEY to API_KEY_VALUE, LANGUAGE to LANGUAGE_KO)
 }
 
 fun showToast(context: Context, msg: String) {

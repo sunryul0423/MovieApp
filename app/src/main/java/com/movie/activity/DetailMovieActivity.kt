@@ -4,10 +4,9 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.movie.R
-import com.movie.common.MOVIE_ID
-import com.movie.common.showThrowableToast
+import com.movie.util.MOVIE_ID
+import com.movie.util.showThrowableToast
 import com.movie.databinding.ActivityDetailMovieBinding
 import com.movie.fragment.MovieDetailOverviewFragment
 import com.movie.fragment.MovieDetailSimilarFragment
@@ -15,9 +14,8 @@ import com.movie.interfaces.IScrollChangeListener
 import com.movie.interfaces.OnScrollListener
 import com.movie.model.data.MovieDetailResponse
 import com.movie.model.view.DetailMovieViewModel
-import com.movie.model.view.DetailMovieViewModelFactory
 import kotlinx.android.synthetic.main.view_action_bar.view.*
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailMovieActivity : BaseActivity<ActivityDetailMovieBinding>(), IScrollChangeListener {
     override val layoutResourceId: Int
@@ -27,18 +25,14 @@ class DetailMovieActivity : BaseActivity<ActivityDetailMovieBinding>(), IScrollC
         viewBinding.csView.isEnableScroll(enableScroll)
     }
 
-    private val detailMovieViewModelFactory: DetailMovieViewModelFactory by inject()
     private var movieId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initActionBar(true, "")
         movieId = intent.getIntExtra(MOVIE_ID, 0)
-
-        val detailMovieViewModel =
-            ViewModelProvider(this, detailMovieViewModelFactory).get(DetailMovieViewModel::class.java).apply {
-                this.requestDetailApi(movieId)
-            }
+        val detailMovieViewModel: DetailMovieViewModel by viewModel()
+        detailMovieViewModel.requestDetailApi(movieId)
 
         viewBinding.detailMovieViewModel = detailMovieViewModel
         viewBinding.lifecycleOwner = this

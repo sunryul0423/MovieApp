@@ -9,7 +9,7 @@ import io.reactivex.disposables.Disposable
 abstract class BaseViewModel : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
-    protected val throwableData = MutableLiveData<Throwable>()
+    private val throwableData = MutableLiveData<Throwable>()
     protected val progress = MutableLiveData<Boolean>()
 
     fun addDisposable(disposable: Disposable) {

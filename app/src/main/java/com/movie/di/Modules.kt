@@ -1,11 +1,12 @@
 package com.movie.di
 
-import com.movie.common.BASE_URL
 import com.movie.interfaces.ApiRequest
 import com.movie.model.view.*
+import com.movie.util.BASE_URL
 import okhttp3.CookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -44,27 +45,13 @@ val apiModule = module {
 }
 
 val viewModelFactoryModule = module {
-    factory {
-        MainViewModelFactory(get())
-    }
-    factory {
-        DetailMovieViewModelFactory(get())
-    }
-    factory {
-        DetailOverviewViewModelFactory(get())
-    }
-    factory {
-        DetailSimilarViewModelFactory(get())
-    }
-    factory {
-        SearchViewModelFactory(get())
-    }
-    factory {
-        DetailCreditModelFactory()
-    }
-    factory {
-        DetailCreditCastViewModelFactory()
-    }
+    viewModel { MainViewModel(get()) }
+    viewModel { DetailMovieViewModel(get()) }
+    viewModel { DetailOverviewViewModel(get()) }
+    viewModel { DetailSimilarViewModel(get()) }
+    viewModel { SearchViewModel(get()) }
+    viewModel { DetailCreditModel() }
+    viewModel { DetailCreditCastViewModel() }
 }
 
 val appModule = listOf(apiModule, viewModelFactoryModule)

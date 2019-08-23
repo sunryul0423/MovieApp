@@ -8,28 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.jakewharton.rxbinding2.view.RxView
 import com.movie.R
 import com.movie.activity.DetailCreditActivity
 import com.movie.activity.DetailMovieActivity
-import com.movie.common.*
+import com.movie.util.*
 import com.movie.databinding.FragmentDetailOverviewBinding
 import com.movie.interfaces.IScrollChangeListener
 import com.movie.model.data.MovieDetailResponse
 import com.movie.model.view.DetailOverviewViewModel
-import com.movie.model.view.DetailOverviewViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 class MovieDetailOverviewFragment : BaseFragment<FragmentDetailOverviewBinding>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_detail_overview
-
-
-    private val detailOverviewViewModelFactory: DetailOverviewViewModelFactory by inject()
 
     private lateinit var movieDetailResponse: MovieDetailResponse
     private var movieId: Int = 0
@@ -60,11 +55,11 @@ class MovieDetailOverviewFragment : BaseFragment<FragmentDetailOverviewBinding>(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        val detailOverviewViewModel =
-            ViewModelProvider(this, detailOverviewViewModelFactory).get(DetailOverviewViewModel::class.java).apply {
-                this.setVisibleMore(true)
-                this.requestOverviewApi(movieId, movieDetailResponse.overview)
-            }
+        val detailOverviewViewModel: DetailOverviewViewModel by viewModel()
+        detailOverviewViewModel.run {
+            this.setVisibleMore(true)
+            this.requestOverviewApi(movieId, movieDetailResponse.overview)
+        }
         viewBinding.detailOverviewViewModel = detailOverviewViewModel
         viewBinding.lifecycleOwner = this
 

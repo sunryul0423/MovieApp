@@ -2,8 +2,8 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="creaditInfoViewModel"
-                  type="com.movie.model.view.CreaditInfoViewModel"/>
+        <variable name="creditInfoViewModel"
+                  type="com.movie.model.view.CreditInfoViewModel"/>
 
     </data>
 
@@ -21,7 +21,7 @@
                 android:layout_height="@dimen/detail_overview_credit_img_size"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
-                app:creditImgUrl="@{creaditInfoViewModel.url}"
+                app:creditImgUrl="@{creditInfoViewModel.url}"
         />
 
         <TextView
@@ -33,7 +33,7 @@
                 android:maxLines="1"
                 android:textColor="@color/white"
                 android:textSize="@dimen/detail_overview_credit_name"
-                android:text="@{creaditInfoViewModel.name}"
+                android:text="@{creditInfoViewModel.name}"
         />
 
         <TextView
@@ -45,7 +45,7 @@
                 android:maxLines="1"
                 android:textColor="@color/main_back_drop_holder"
                 android:textSize="@dimen/detail_overview_credit_part"
-                android:text="@{creaditInfoViewModel.part}"/>
+                android:text="@{creditInfoViewModel.part}"/>
 
     </LinearLayout>
 

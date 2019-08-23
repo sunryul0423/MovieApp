@@ -2,7 +2,7 @@ package com.movie.model.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.movie.common.IMAGE_URL
+import com.movie.util.IMAGE_URL
 import com.movie.interfaces.ApiRequest
 import com.movie.model.data.MovieDetailResponse
 import io.reactivex.android.schedulers.AndroidSchedulers

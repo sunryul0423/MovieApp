@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.movie.R
 import com.movie.activity.DetailMovieActivity
-import com.movie.common.IMAGE_URL
-import com.movie.common.MOVIE_ID
+import com.movie.util.IMAGE_URL
+import com.movie.util.MOVIE_ID
 import com.movie.databinding.ViewMovieListItemBinding
 import com.movie.model.data.MovieMainResponse
 

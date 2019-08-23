@@ -69,7 +69,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // android_X
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
-    implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation "androidx.core:core-ktx:$coreVersion"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
@@ -84,6 +84,7 @@ dependencies {
     // Koin
     implementation 'org.koin:koin-android:2.0.1'
     implementation 'org.koin:koin-androidx-scope:2.0.1'
+    implementation 'org.koin:koin-androidx-viewmodel:2.0.1'
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'

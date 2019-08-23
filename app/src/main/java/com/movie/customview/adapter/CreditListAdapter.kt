@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.movie.R
 import com.movie.databinding.ViewCreditListItemBinding
-import com.movie.model.view.CreaditInfoViewModel
+import com.movie.model.view.CreditInfoViewModel
 
 class CreditListHolder(binding: ViewCreditListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -14,13 +14,13 @@ class CreditListAdapter : RecyclerView.Adapter<CreditListHolder>() {
 
     private lateinit var binding: ViewCreditListItemBinding
 
-    private var creaditInfoList: List<CreaditInfoViewModel> = mutableListOf()
+    private var creditInfoList: List<CreditInfoViewModel> = mutableListOf()
 
-    fun setItem(_creaditInfoList: List<CreaditInfoViewModel>?) {
-        creaditInfoList = if (_creaditInfoList.isNullOrEmpty()) {
+    fun setItem(_creditInfoList: List<CreditInfoViewModel>?) {
+        creditInfoList = if (_creditInfoList.isNullOrEmpty()) {
             mutableListOf()
         } else {
-            _creaditInfoList
+            _creditInfoList
         }
         notifyDataSetChanged()
     }
@@ -32,11 +32,11 @@ class CreditListAdapter : RecyclerView.Adapter<CreditListHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return creaditInfoList.size
+        return creditInfoList.size
     }
 
     override fun onBindViewHolder(holder: CreditListHolder, position: Int) {
-        binding.creaditInfoViewModel = creaditInfoList[position]
+        binding.creditInfoViewModel = creditInfoList[position]
     }
 
 }
