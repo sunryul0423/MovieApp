@@ -9,9 +9,6 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.movie.R
-import com.movie.util.CREDIT_COUNT
-import com.movie.util.PAGER_COUNT
-import com.movie.util.SEARCH_SPAN_COUNT
 import com.movie.customview.view.CustomIndicator
 import com.movie.model.data.CreditResponse
 import com.movie.model.data.MovieMainResponse
@@ -19,7 +16,8 @@ import com.movie.model.data.RecyclerViewSpacing
 import com.movie.model.data.VideoResponse
 import com.movie.model.view.CreditInfoViewModel
 import com.movie.model.view.PagerViewModel
-import com.movie.model.view.SearchViewModel
+import com.movie.util.CREDIT_COUNT
+import com.movie.util.PAGER_COUNT
 
 @BindingAdapter("recyclerAdapter")
 fun setRecyclerAdapter(view: RecyclerView, adapter: CustomListAdapter?) {
@@ -94,42 +92,6 @@ fun setCreditImgUrl(view: ImageView, url: String?) {
         .placeholder(R.drawable.profile)
         .error(R.drawable.profile)
         .into(view)
-}
-
-@BindingAdapter("searchAdapter")
-fun setSearchAdapter(view: RecyclerView, adapter: SimilarGridAdapter?) {
-    adapter?.let {
-        val spacing: Int = view.context.resources.getDimensionPixelSize(R.dimen.detail_search_grid_margin)
-        val recyclerViewDecoration = RecyclerViewDecoration(
-            true,
-            SEARCH_SPAN_COUNT,
-            RecyclerViewSpacing(spacing, spacing, spacing, spacing)
-        )
-
-        view.setHasFixedSize(true)
-        view.addItemDecoration(recyclerViewDecoration)
-        view.layoutManager = GridLayoutManager(view.context, SEARCH_SPAN_COUNT)
-        view.adapter = it
-    }
-}
-
-@BindingAdapter("searchItem", "searchAdd")
-fun setSearchItem(view: RecyclerView, searchList: List<MovieMainResponse.Movie>?, isAdd: Boolean) {
-    searchList?.let {
-        val adapter = view.adapter as SimilarGridAdapter
-        adapter.addList(it, isAdd)
-    }
-}
-
-@BindingAdapter("searchModel")
-fun setSearchModel(view: RecyclerView, searchViewModel: SearchViewModel?) {
-    searchViewModel?.let {
-        view.setOnScrollChangeListener { _, _, _, _, _ ->
-            if (!view.canScrollVertically(1)) { //최하단 스크롤
-                it.requestSearchApi(it.currentPage, true)
-            }
-        }
-    }
 }
 
 @BindingAdapter("videoListAdapter")

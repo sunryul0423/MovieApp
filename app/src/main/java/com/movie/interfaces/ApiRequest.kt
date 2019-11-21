@@ -14,16 +14,16 @@ import retrofit2.http.QueryMap
 
 interface ApiRequest {
     @GET(URL_UPCOMING)
-    fun getUpcoming(@Query(LANGUAGE) page: String = LANGUAGE_KO): Single<MovieMainResponse>
+    fun getUpcoming(@QueryMap option: Map<String, String> = getParam()): Single<MovieMainResponse>
 
     @GET(URL_NOW_PLAYING)
-    fun getNowPlaying(@Query(LANGUAGE) page: String = LANGUAGE_KO): Single<MovieMainResponse>
+    fun getNowPlaying(@QueryMap option: Map<String, String> = getParam()): Single<MovieMainResponse>
 
     @GET(URL_POPULAR)
-    fun getPopular(@Query(LANGUAGE) page: String = LANGUAGE_KO): Single<MovieMainResponse>
+    fun getPopular(@QueryMap option: Map<String, String> = getParam()): Single<MovieMainResponse>
 
     @GET(URL_TOP_RATED)
-    fun getTopRated(@Query(LANGUAGE) page: String = LANGUAGE_KO): Single<MovieMainResponse>
+    fun getTopRated(@QueryMap option: Map<String, String> = getParam()): Single<MovieMainResponse>
 
     @GET(URL_DETAILS) // 영화 상세
     fun getDetail(@Path(MOVIE_ID) id: Int, @QueryMap option: Map<String, String> = getParam()): Single<MovieDetailResponse>
@@ -42,6 +42,7 @@ interface ApiRequest {
         @Query(QUERY) query: String,
         @Query(PAGE) page: Int,
         @QueryMap option: Map<String, String> = hashMapOf(
+            API_KEY to API_KEY_VALUE,
             LANGUAGE to LANGUAGE_KO,
             REGION to LANGUAGE_KO
         )

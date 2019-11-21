@@ -13,7 +13,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/detail_similar_img_height"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:contentDescription="@null"/>
 
         <TextView

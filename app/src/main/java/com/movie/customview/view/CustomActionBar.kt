@@ -46,7 +46,7 @@ class CustomActionBar : LinearLayout, View.OnClickListener {
     }
 
     fun setChangeIcon(isBackIcon: Boolean) {
-        ivMenuRight.background = ContextCompat.getDrawable(mContext, R.drawable.baseline_search_black)
+        ivMenuRight.background = ContextCompat.getDrawable(mContext, android.R.drawable.ic_menu_search)
         if (isBackIcon) {
             ivMenuLeft.background = ContextCompat.getDrawable(mContext, R.drawable.baseline_arrow_back_ios_black)
         } else {
@@ -76,5 +76,4 @@ class CustomActionBar : LinearLayout, View.OnClickListener {
             }
         }
     }
-
 }

@@ -37,7 +37,7 @@
             </LinearLayout>
 
             <EditText
-                    android:id="@+id/et_search_title"
+                    android:id="@+id/etSearchTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -62,23 +62,17 @@
                 <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/baseline_search_black"
-                        android:backgroundTint="@color/white"
+                        android:background="@android:drawable/ic_menu_search"
                         android:contentDescription="@null"/>
 
             </LinearLayout>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_search"
+                android:id="@+id/rvSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:nestedScrollingEnabled="false"
-                app:searchAdapter="@{searchViewModel.searchGridAdapter}"
-                app:searchItem="@{searchViewModel.searchList}"
-                app:searchAdd="@{safeUnbox(searchViewModel.isAdd)}"
-                app:searchModel="@{searchViewModel}"/>
+                android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
 
